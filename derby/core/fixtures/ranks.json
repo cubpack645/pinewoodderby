@@ -1,0 +1,146 @@
+[
+{
+    "model": "core.ranks",
+    "pk": 1,
+    "fields": {
+        "rank": "Lion",
+        "classid": 1
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 2,
+    "fields": {
+        "rank": "Tiger",
+        "classid": 1
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 3,
+    "fields": {
+        "rank": "Wolf",
+        "classid": 1
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 4,
+    "fields": {
+        "rank": "Bear",
+        "classid": 1
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 5,
+    "fields": {
+        "rank": "Webelo 1",
+        "classid": 1
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 6,
+    "fields": {
+        "rank": "Webelo 2",
+        "classid": 1
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 7,
+    "fields": {
+        "rank": "Younger Siblings",
+        "classid": 1
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 8,
+    "fields": {
+        "rank": "Older Siblings",
+        "classid": 1
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 9,
+    "fields": {
+        "rank": "Lion",
+        "classid": 2
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 10,
+    "fields": {
+        "rank": "Tiger",
+        "classid": 2
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 11,
+    "fields": {
+        "rank": "Wolf",
+        "classid": 2
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 12,
+    "fields": {
+        "rank": "Bear",
+        "classid": 2
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 13,
+    "fields": {
+        "rank": "Webelo 1",
+        "classid": 2
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 14,
+    "fields": {
+        "rank": "Webelo 2",
+        "classid": 2
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 15,
+    "fields": {
+        "rank": "Younger Siblings",
+        "classid": 2
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 16,
+    "fields": {
+        "rank": "Older Siblings",
+        "classid": 2
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 17,
+    "fields": {
+        "rank": "Slowest",
+        "classid": 3
+    }
+},
+{
+    "model": "core.ranks",
+    "pk": 18,
+    "fields": {
+        "rank": "Fastest",
+        "classid": 4
+    }
+}
+]

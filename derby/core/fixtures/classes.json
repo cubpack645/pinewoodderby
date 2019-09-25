@@ -1,0 +1,31 @@
+[
+{
+    "model": "core.classes",
+    "pk": 1,
+    "fields": {
+        "class_field": "Pack Races"
+    }
+},
+{
+    "model": "core.classes",
+    "pk": 2,
+    "fields": {
+        "class_field": "Den Races"
+
+    }
+},
+{
+    "model": "core.classes",
+    "pk": 3,
+    "fields": {
+        "class_field": "Pack Slowest"
+    }
+},
+{
+    "model": "core.classes",
+    "pk": 4,
+    "fields": {
+        "class_field": "Pack Fastest"
+    }
+}
+]
