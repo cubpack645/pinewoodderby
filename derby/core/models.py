@@ -130,12 +130,12 @@ class RegistrationInfo(models.Model):
 
 
 class Roster(models.Model):
-    rosterid = models.AutoField(db_column='RosterID', primary_key=True)  # Field name made lowercase.
-    round = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')  # Field name made lowercase.
-    classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')  # Field name made lowercase.
-    racer = models.ForeignKey(RegistrationInfo, models.DO_NOTHING, db_column='RacerID')  # Field name made lowercase.
-    finalist = models.IntegerField(db_column='Finalist')  # Field name made lowercase.
-    grandfinalist = models.IntegerField(db_column='GrandFinalist')  # Field name made lowercase.
+    id = models.AutoField(db_column='RosterID', primary_key=True)
+    round = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')
+    classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')
+    racer = models.ForeignKey(RegistrationInfo, models.DO_NOTHING, db_column='RacerID')
+    finalist = models.IntegerField(db_column='Finalist', blank=True, null=False, default=0)
+    grandfinalist = models.IntegerField(db_column='GrandFinalist', blank=True, null=False, default=0)
 
     class Meta:
         managed = False

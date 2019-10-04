@@ -5,7 +5,7 @@ import logging
 
 from django.conf import settings
 
-from derby.core.models import Classes, Ranks, RegistrationInfo, Rounds, RaceChart
+from derby.core.models import Classes, Ranks, RegistrationInfo, Rounds, RaceChart, Roster
 from derby.core.common import allocate_to_heats, allocate_to_lanes
 
 logger = logging.getLogger(__name__)
@@ -102,6 +102,14 @@ class Command:
                         chartnumber=0 if car_lane.car is None else car_lane.car.carnumber,
                     )
                     obj.save()
+                    if car_lane.car:
+                        obj = Roster(
+                            id=result_idx,
+                            classid=self.classid,
+                            round=self.round,
+                            racer=car_lane.car,
+                        )
+                        obj.save()
                     saved += 1
                 except Exception as ex:
                     logger.warning(f'Failed to persist RaceChart entry with exception {ex}')
