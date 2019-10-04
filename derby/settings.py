@@ -144,7 +144,7 @@ ROUND_CONFIG = {
         'round_id': 50,
         'round': 1,
         'chart_type': -1,
-        'phase': 0,
+        'phase': 1,
     },
     'denfinals': {
         'classid': 2,

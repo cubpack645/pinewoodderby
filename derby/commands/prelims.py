@@ -100,6 +100,7 @@ class Command:
                         lane=car_lane.lane,
                         racer=car_lane.car,
                         chartnumber=0 if car_lane.car is None else car_lane.car.carnumber,
+                        phase=self.config['phase'],
                     )
                     obj.save()
                     if car_lane.car:

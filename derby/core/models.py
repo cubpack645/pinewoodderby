@@ -157,15 +157,15 @@ class Rounds(models.Model):
 class RaceChart(models.Model):
     resultid = models.AutoField(db_column='ResultID', primary_key=True)  # Field name made lowercase.
     classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')  # Field name made lowercase.
-    round = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')  # Field name made lowercase.
-    heat = models.IntegerField(db_column='Heat')  # Field name made lowercase.
-    lane = models.IntegerField(db_column='Lane')  # Field name made lowercase.
-    racer = models.ForeignKey('RegistrationInfo', models.DO_NOTHING, db_column='RacerID', blank=True, null=True)  # Field name made lowercase.
-    chartnumber = models.IntegerField(db_column='ChartNumber', blank=True, null=True)  # Field name made lowercase.
-    finishtime = models.FloatField(db_column='FinishTime', blank=True, null=True)  # Field name made lowercase.
-    finishplace = models.IntegerField(db_column='FinishPlace', blank=True, null=True)  # Field name made lowercase.
-    points = models.IntegerField(db_column='Points', blank=True, null=True)  # Field name made lowercase.
-    completed = models.DateTimeField(db_column='Completed', blank=True, null=True)  # Field name made lowercase.
+    round = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')
+    heat = models.IntegerField(db_column='Heat')
+    lane = models.IntegerField(db_column='Lane')
+    racer = models.ForeignKey('RegistrationInfo', models.DO_NOTHING, db_column='RacerID', blank=True, null=True)
+    chartnumber = models.IntegerField(db_column='ChartNumber', blank=True, null=True)
+    finishtime = models.FloatField(db_column='FinishTime', blank=True, null=True)
+    finishplace = models.IntegerField(db_column='FinishPlace', blank=True, null=True)
+    points = models.IntegerField(db_column='Points', blank=True, null=True)
+    completed = models.DateTimeField(db_column='Completed', blank=True, null=True)
     ignoretime = models.IntegerField(db_column='IgnoreTime', blank=True, null=False, default=0)
     masterheat = models.IntegerField(db_column='MasterHeat', blank=True, null=False, default=0)
     phase = models.IntegerField(db_column='Phase', blank=True, null=False, default=0)

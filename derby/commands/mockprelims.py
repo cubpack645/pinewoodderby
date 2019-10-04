@@ -26,7 +26,7 @@ class Command:
             result.save()
             byheat[result.heat].append(result)
         for heat in byheat.values():
-            heat.sort(key=lambda i: i.finishtime, reverse=True)
+            heat.sort(key=lambda i: i.finishtime)
             for i, result in enumerate(heat, 1):
                 result.points = result.finishplace = i
                 result.save()
