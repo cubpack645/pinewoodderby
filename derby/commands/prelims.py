@@ -25,6 +25,7 @@ class Command:
     def __init__(self, args):
         self.args = args
         self.config = settings.ROUND_CONFIG['prelims']
+        self.randomize_lanes = getattr(args, 'randomize', True)
 
     def run(self):
         logger.info('Starting prelims')
@@ -75,10 +76,12 @@ class Command:
     def schedule(self):
         self.round = self._persist_round()
         racers = RegistrationInfo.objects.filter(classid=self.classid)
-        heats = self._create_heats(racers)
+        heats = self._create_heats(racers, randomize=self.randomize_lanes)
         self._persist_schedule(heats)
 
     def _create_heats(self, racers, randomize=False):
+        # every racer needs to race twice
+        racers = list(racers) * 2
         heats = allocate_to_heats(racers)
         heats_with_lanes = []
         for i, heat in enumerate(heats, 1):
