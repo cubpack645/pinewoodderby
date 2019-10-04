@@ -78,14 +78,6 @@ class Command:
         heats = self._create_heats(racers)
         self._persist_schedule(heats)
 
-    #resultid = models.AutoField(db_column='ResultID', primary_key=True)  # Field name made lowercase.
-    #classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')  # Field name made lowercase.
-    #roundid = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')  # Field name made lowercase.
-    #heat = models.IntegerField(db_column='Heat')  # Field name made lowercase.
-    #lane = models.IntegerField(db_column='Lane')  # Field name made lowercase.
-    #racer = models.ForeignKey('RegistrationInfo', models.DO_NOTHING, db_column='RacerID', blank=True, null=True)  # Field name made lowercase.
-    #chartnumber = models.IntegerField(db_column='ChartNumber', blank=True, null=True)  # Field name made lowercase.
-
     def _create_heats(self, racers, randomize=False):
         heats = allocate_to_heats(racers)
         heats_with_lanes = []
@@ -103,7 +95,7 @@ class Command:
                     obj = RaceChart(
                         resultid=result_idx,
                         classid=self.classid,
-                        roundid=self.round,
+                        round=self.round,
                         heat=heat_idx,
                         lane=car_lane.lane,
                         racer=car_lane.car,
@@ -118,7 +110,7 @@ class Command:
 
     def _persist_round(self):
         obj = Rounds(
-            roundid=self.config['round_id'],
+            id=self.config['round_id'],
             round=self.config['round'],
             classid=self.classid,
             charttype=self.config['chart_type'],

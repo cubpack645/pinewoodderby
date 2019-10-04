@@ -131,9 +131,9 @@ class RegistrationInfo(models.Model):
 
 class Roster(models.Model):
     rosterid = models.AutoField(db_column='RosterID', primary_key=True)  # Field name made lowercase.
-    roundid = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')  # Field name made lowercase.
+    round = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')  # Field name made lowercase.
     classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')  # Field name made lowercase.
-    racerid = models.ForeignKey(RegistrationInfo, models.DO_NOTHING, db_column='RacerID')  # Field name made lowercase.
+    racer = models.ForeignKey(RegistrationInfo, models.DO_NOTHING, db_column='RacerID')  # Field name made lowercase.
     finalist = models.IntegerField(db_column='Finalist')  # Field name made lowercase.
     grandfinalist = models.IntegerField(db_column='GrandFinalist')  # Field name made lowercase.
 
@@ -143,7 +143,7 @@ class Roster(models.Model):
 
 
 class Rounds(models.Model):
-    roundid = models.AutoField(db_column='RoundID', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='RoundID', primary_key=True)  # Field name made lowercase.
     round = models.IntegerField(db_column='Round')  # Field name made lowercase.
     classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')  # Field name made lowercase.
     charttype = models.IntegerField(db_column='ChartType', blank=True, null=True)  # Field name made lowercase.
@@ -157,7 +157,7 @@ class Rounds(models.Model):
 class RaceChart(models.Model):
     resultid = models.AutoField(db_column='ResultID', primary_key=True)  # Field name made lowercase.
     classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')  # Field name made lowercase.
-    roundid = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')  # Field name made lowercase.
+    round = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')  # Field name made lowercase.
     heat = models.IntegerField(db_column='Heat')  # Field name made lowercase.
     lane = models.IntegerField(db_column='Lane')  # Field name made lowercase.
     racer = models.ForeignKey('RegistrationInfo', models.DO_NOTHING, db_column='RacerID', blank=True, null=True)  # Field name made lowercase.
