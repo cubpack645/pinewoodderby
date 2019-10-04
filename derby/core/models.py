@@ -98,7 +98,7 @@ class Ranks(models.Model):
 
 
 class RegistrationInfo(models.Model):
-    racerid = models.AutoField(db_column='RacerID', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='RacerID', primary_key=True)  # Field name made lowercase.
     carnumber = models.IntegerField(db_column='CarNumber')  # Field name made lowercase.
     carname = models.TextField(db_column='CarName', blank=True, null=False, default='')  # Field name made lowercase.
     lastname = models.TextField(db_column='LastName')  # Field name made lowercase.
@@ -124,6 +124,13 @@ class RegistrationInfo(models.Model):
             rank=rank,
             passedinspection=1,
         )
+
+    def clone_for_class_and_rank(self, new_pk, new_class, new_rank):
+        values = {f.name: getattr(self, f.name) for f in self._meta.fields if f not in ('id', 'classid', 'rank')}
+        values['id'] = new_pk
+        values['classid'] = new_class
+        values['rank'] = new_rank
+        return self.__class__(**values)
 
     def __str__(self):
         return f'({self.racerid}) {self.carnumber:03d} {self.lastname}, {self.firstname}'

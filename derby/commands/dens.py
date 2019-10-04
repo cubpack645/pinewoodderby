@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 
+from derby.core.models import Classes, RegistrationInfo
 from derby.core.common import (
     allocate_to_heats, allocate_to_lanes, step, create_class, create_ranks, create_round, create_race_roster
 )
@@ -38,3 +39,13 @@ class Command:
             pk=self.config['round_id'], number=self.config['round_number'], parent_class=self.classid,
             chart_type=self.config['chart_type'], phase=self.config['phase'],
         )
+
+    @step
+    def create_registration_info(self):
+        prelim_classid = Classes.objects.get(pk=settings.ROUND_CONFIG['prelims']['class_id'])
+        prelim_racers = RegistrationInfo.objects.filter(classid=prelim_classid).select_related('rank')
+        rank_lookup = {rank.rank: rank for rank in self.ranks}
+        for i, racer in enumerate(prelim_racers, 0):
+            pk = self.config['registration_info_firstid'] + i
+            obj = racer.clone_for_class_and_rank(pk, self.classid, rank_lookup[racer.rank.rank])
+            obj.save()
