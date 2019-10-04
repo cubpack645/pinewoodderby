@@ -115,8 +115,9 @@ class RegistrationInfo(models.Model):
         db_table = 'RegistrationInfo'
 
     @classmethod
-    def from_import(cls, record, classid, rank):
+    def from_import(cls, pk, record, classid, rank):
         return cls(
+            id=pk,
             carnumber=int(record.carid),
             lastname=record.lastname,
             firstname=record.firstname,

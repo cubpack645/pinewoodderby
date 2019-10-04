@@ -6,7 +6,8 @@ from django.conf import settings
 
 from derby.core.models import RegistrationInfo, RaceChart
 from derby.core.common import (
-    allocate_to_heats, allocate_to_lanes, step, create_class, create_ranks, create_round, create_race_roster
+    step, create_class, create_ranks, create_round, create_race_roster,
+    create_heats, create_race_chart
 )
 
 logger = logging.getLogger(__name__)
@@ -36,29 +37,31 @@ class Command:
     @step
     def create_ranks(self):
         self.ranks = create_ranks(
-            names=self.config['ranks'], starting_id=self.config['ranks_starting_id'],
-            ending_id=self.config['ranks_ending_id'], parent_class=self.classid
+            names=self.config['ranks'], starting_id=self.config['ranks_id_range'].start,
+            ending_id=self.config['ranks_id_range'].end, parent_class=self.classid
         )
 
     @step
     def import_csv(self):
-        csv_records = self._read_csv(self.args.roster)
-
         logger.debug('Deleting any existing registration info objects')
         RegistrationInfo.objects.filter(
-            pk__gte=self.config['registration_info_firstid'],
-            pk__lte=self.config['registration_info_lastid'],
+            pk__gte=self.config['registrationinfo_id_range'].start,
+            pk__lte=self.config['registrationinfo_id_range'].end,
+            classid=self.classid,
         ).delete()
+
+        csv_records = self._read_csv(self.args.roster)
 
         rank_lookup = {rank.rank: rank for rank in self.ranks}
         saved, skipped = 0, 0
+        start_idx = self.config['registrationinfo_id_range'].start
         for i, record in enumerate(csv_records):
             rank = rank_lookup.get(record.group)
             if rank is None:
                 logger.warn(f'No Rank found for {record.group} for record {record}')
                 skipped += 1
                 continue
-            obj = RegistrationInfo.from_import(record, self.classid, rank)
+            obj = RegistrationInfo.from_import(start_idx + i, record, self.classid, rank)
             obj.save()
             saved += 1
         logger.info(f'Done with import_csv, saved {saved} and skipped {skipped} records')
@@ -77,42 +80,18 @@ class Command:
 
     @step
     def schedule(self):
+        # delete any previous racechart entries
+        RaceChart.objects.filter(
+            pk__gte=self.config['racechart_id_range'].start,
+            pk__lte=self.config['racechart_id_range'].end,
+        ).delete()
         racers = RegistrationInfo.objects.filter(classid=self.classid)
-        heats = self._create_heats(racers, randomize=self.randomize_lanes)
-        self._persist_schedule(heats)
-
-    def _create_heats(self, racers, randomize=False):
         # every racer needs to race twice
         racers = list(racers) * 2
-        heats = allocate_to_heats(racers)
-        heats_with_lanes = []
-        for i, heat in enumerate(heats, 1):
-            heats_with_lanes.append(allocate_to_lanes(heat, randomize=randomize))
-        return heats_with_lanes
-
-    def _persist_schedule(self, heats):
-        saved, skipped = 0, 0
-        result_idx = 0
-        for heat_idx, heat in enumerate(heats, 1):
-            for car_lane in heat:
-                try:
-                    result_idx += 1
-                    obj = RaceChart(
-                        resultid=result_idx,
-                        classid=self.classid,
-                        round=self.round,
-                        heat=heat_idx,
-                        lane=car_lane.lane,
-                        racer=car_lane.car,
-                        chartnumber=0 if car_lane.car is None else car_lane.car.carnumber,
-                        phase=self.config['phase'],
-                    )
-                    obj.save()
-                    saved += 1
-                except Exception as ex:
-                    logger.warning(f'Failed to persist RaceChart entry with exception {ex}')
-                    skipped += 1
-        logger.info(f'Saved {saved} and skipped {skipped} race chart entries')
+        heats = create_heats(racers, randomize=self.randomize_lanes)
+        create_race_chart(
+            heats, self.config['racechart_id_range'].start, self.classid, self.round, self.config['phase']
+        )
 
     def _read_csv(self, filepath):
         records = []

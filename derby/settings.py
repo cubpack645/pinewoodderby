@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from collections import namedtuple
+
+IdRange = namedtuple('IdRange', 'start end')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -137,21 +140,19 @@ ROUND_CONFIG = {
     'prelims': {
         'class_id': 1,
         'class_name': 'Prelims',
-        'ranks_starting_id': 1,
-        'ranks_ending_id': 10,
+        'ranks_id_range': IdRange(1, 10),
         'ranks': DENS,
-        'registration_info_firstid': 1,
-        'registration_info_lastid': 1000,
+        'registrationinfo_id_range': IdRange(1, 1000),
         'round_id': 50,
         'round_number': 1,
         'chart_type': -1,
         'phase': 1,
+        'racechart_id_range': IdRange(1, 1000),
     },
     'dens': {
         'class_id': 2,
         'class_name': 'Den Finals',
-        'ranks_starting_id': 11,
-        'ranks_ending_id': 20,
+        'ranks_id_range': IdRange(11, 20),
         'ranks': DENS,
         'registration_info_firstid': 1001,
         'registration_info_lastid': 2000,
@@ -159,5 +160,6 @@ ROUND_CONFIG = {
         'round_number': 2,
         'chart_type': -1,
         'phase': 1,
+        'racechart_id_range': IdRange(1001, 2000),
     },
 }
