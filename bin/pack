@@ -1,0 +1,65 @@
+#!/usr/bin/env python
+import argparse
+import importlib
+import logging
+import os
+
+import django
+from django.conf import settings
+django.setup()      # noqa
+
+logger = logging.getLogger(__name__)
+
+
+COMMANDS = [
+    os.path.splitext(f)[0] for f in os.listdir(settings.COMMANDS_DIR) if f.endswith('.py') and f != '__init__.py'
+]
+
+
+def main(args):
+    cmd_classes, error_count = [], 0
+    # first make sure we recognise all actions and can load their corresponding cmd classes
+    for action in args.actions:
+        module_path = f'derby.commands.{action}'
+        try:
+            module = importlib.import_module(module_path)
+            cls = getattr(module, 'Command')
+            cmd_classes.append(cls)
+        except ModuleNotFoundError:
+            logger.error(f'Failed to find module {module_path}')
+            error_count += 1
+        except AttributeError:
+            logger.error(f'Failed to find a Command class in module {module_path}')
+            error_count += 1
+
+    # now instantiate and run these classes
+    if error_count > 0:
+        logger.warning(f'Encountered {error_count} error(s), will not continue to run actions')
+        return
+
+    for i, (action, cls) in enumerate(zip(args.actions, cmd_classes), 1):
+        logger.info(f'Dispatching {action}, action {i} of {len(args.actions)}')
+        try:
+            cls(args).run()
+        except Exception as ex:
+            logger.error(f'Action {action} failed with exception {ex}')
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('actions', nargs='*', default=[], choices=COMMANDS)
+    parser.add_argument('-v', '--verbose', action='count', default=2)
+    parser.add_argument('-r', '--roster', default=os.path.join(settings.RESOURCES_DIR, 'roster.csv'))
+    dbgroup = parser.add_mutually_exclusive_group(required=False)
+    dbgroup.add_argument('--pristine', action='store_true', default=False)
+    dbgroup.add_argument('--2019', action='store_true', default=False)
+    return parser.parse_args()
+
+
+if __name__ == '__main__':
+    args = parse_args()
+    logging.basicConfig(
+        level=logging.WARN - min(2, args.verbose) * 10,
+        format='%(asctime)s %(module)s %(levelname)s %(message)s'
+    )
+    main(args)

@@ -14,6 +14,8 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RESOURCES_DIR = os.path.join(BASE_DIR, 'resources')
+COMMANDS_DIR = os.path.join(BASE_DIR, 'derby', 'commands')
 
 
 # Quick-start development settings - unsuitable for production
@@ -74,10 +76,13 @@ WSGI_APPLICATION = 'derby.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+PRISTINE_DB = os.path.join(BASE_DIR, 'resources', 'pristine.sqlite')
+LIVE_DB = os.path.join(BASE_DIR, 'live.sqlite')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'finals2.sqlite'),
+        'NAME': LIVE_DB,
     }
 }
 
@@ -119,3 +124,32 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+DENS_EX_SIBLINGS = ['Lion', 'Tiger', 'Wolf', 'Bear', 'Webelo 1', 'Webelo 2']
+SIBLINGS = ['Younger Siblings', 'Older Siblings']
+DENS = DENS_EX_SIBLINGS + SIBLINGS
+
+LANES = 8
+MIN_CARS_PER_HEAT = 4
+
+ROUND_CONFIG = {
+    'prelims': {
+        'class_id': 1,
+        'class_name': 'Prelims',
+        'ranks_starting_id': 1,
+        'ranks': DENS,
+        'registration_info_firstid': 1,
+        'registration_info_lastid': 1000,
+        'round_id': 50,
+        'round': 1,
+        'chart_type': -1,
+        'phase': 0,
+    },
+    'denfinals': {
+        'classid': 2,
+        'class_name': 'Den Finals',
+        'ranks_starting_id': 11,
+        'ranks': DENS,
+    },
+}

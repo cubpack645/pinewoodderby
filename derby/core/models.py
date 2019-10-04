@@ -39,6 +39,9 @@ class Classes(models.Model):
         managed = False
         db_table = 'Classes'
 
+    def __str__(self):
+        return self.class_field
+
 
 class CrewPositions(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
@@ -58,27 +61,6 @@ class DriversTest(models.Model):
     class Meta:
         managed = False
         db_table = 'DriversTest'
-
-
-class RaceChart(models.Model):
-    resultid = models.AutoField(db_column='ResultID', primary_key=True)  # Field name made lowercase.
-    classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')  # Field name made lowercase.
-    roundid = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')  # Field name made lowercase.
-    heat = models.IntegerField(db_column='Heat')  # Field name made lowercase.
-    lane = models.IntegerField(db_column='Lane')  # Field name made lowercase.
-    racerid = models.ForeignKey('RegistrationInfo', models.DO_NOTHING, db_column='RacerID', blank=True, null=True)  # Field name made lowercase.
-    chartnumber = models.IntegerField(db_column='ChartNumber', blank=True, null=True)  # Field name made lowercase.
-    finishtime = models.FloatField(db_column='FinishTime', blank=True, null=True)  # Field name made lowercase.
-    finishplace = models.IntegerField(db_column='FinishPlace', blank=True, null=True)  # Field name made lowercase.
-    points = models.IntegerField(db_column='Points', blank=True, null=True)  # Field name made lowercase.
-    completed = models.DateTimeField(db_column='Completed', blank=True, null=True)  # Field name made lowercase.
-    ignoretime = models.TextField(db_column='IgnoreTime', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
-    masterheat = models.IntegerField(db_column='MasterHeat', blank=True, null=True)  # Field name made lowercase.
-    phase = models.IntegerField(db_column='Phase', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'RaceChart'
 
 
 class RaceCrew(models.Model):
@@ -121,8 +103,8 @@ class RegistrationInfo(models.Model):
     carname = models.TextField(db_column='CarName', blank=True, null=False, default='')  # Field name made lowercase.
     lastname = models.TextField(db_column='LastName')  # Field name made lowercase.
     firstname = models.TextField(db_column='FirstName')  # Field name made lowercase.
-    classid = models.IntegerField(db_column='ClassID', blank=True, null=False, default=0)  # Field name made lowercase.
-    rankid = models.IntegerField(db_column='RankID', blank=True, null=False, default=0)
+    classid = models.ForeignKey('Classes', models.DO_NOTHING, db_column='ClassID')
+    rank = models.ForeignKey('Ranks', models.DO_NOTHING, db_column='RankID')
     passedinspection = models.IntegerField(db_column='PassedInspection', blank=True, null=False, default=1)
     imagefile = models.TextField(db_column='ImageFile', blank=True, null=False, default='')
     exclude = models.IntegerField(db_column='Exclude', blank=True, null=False, default=0)
@@ -133,13 +115,13 @@ class RegistrationInfo(models.Model):
         db_table = 'RegistrationInfo'
 
     @classmethod
-    def from_import(cls, record, classid=0, rankid=0):
+    def from_import(cls, record, classid, rank):
         return cls(
             carnumber=int(record.carid),
             lastname=record.lastname,
             firstname=record.firstname,
             classid=classid,
-            rankid=rankid,
+            rank=rank,
             passedinspection=1,
         )
 
@@ -170,6 +152,27 @@ class Rounds(models.Model):
     class Meta:
         managed = False
         db_table = 'Rounds'
+
+
+class RaceChart(models.Model):
+    resultid = models.AutoField(db_column='ResultID', primary_key=True)  # Field name made lowercase.
+    classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')  # Field name made lowercase.
+    roundid = models.ForeignKey('Rounds', models.DO_NOTHING, db_column='RoundID')  # Field name made lowercase.
+    heat = models.IntegerField(db_column='Heat')  # Field name made lowercase.
+    lane = models.IntegerField(db_column='Lane')  # Field name made lowercase.
+    racer = models.ForeignKey('RegistrationInfo', models.DO_NOTHING, db_column='RacerID', blank=True, null=True)  # Field name made lowercase.
+    chartnumber = models.IntegerField(db_column='ChartNumber', blank=True, null=True)  # Field name made lowercase.
+    finishtime = models.FloatField(db_column='FinishTime', blank=True, null=True)  # Field name made lowercase.
+    finishplace = models.IntegerField(db_column='FinishPlace', blank=True, null=True)  # Field name made lowercase.
+    points = models.IntegerField(db_column='Points', blank=True, null=True)  # Field name made lowercase.
+    completed = models.DateTimeField(db_column='Completed', blank=True, null=True)  # Field name made lowercase.
+    ignoretime = models.IntegerField(db_column='IgnoreTime', blank=True, null=False, default=0)
+    masterheat = models.IntegerField(db_column='MasterHeat', blank=True, null=False, default=0)
+    phase = models.IntegerField(db_column='Phase', blank=True, null=False, default=0)
+
+    class Meta:
+        managed = False
+        db_table = 'RaceChart'
 
 
 class StandingsGroup(models.Model):
