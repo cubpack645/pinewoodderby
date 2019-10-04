@@ -88,7 +88,7 @@ class RaceInfo(models.Model):
 
 
 class Ranks(models.Model):
-    rankid = models.AutoField(db_column='RankID', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='RankID', primary_key=True)  # Field name made lowercase.
     rank = models.TextField(db_column='Rank')  # Field name made lowercase.
     classid = models.ForeignKey(Classes, models.DO_NOTHING, db_column='ClassID')  # Field name made lowercase.
 

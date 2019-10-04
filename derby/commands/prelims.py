@@ -1,12 +1,13 @@
 from collections import namedtuple
 import csv
-import functools
 import logging
 
 from django.conf import settings
 
-from derby.core.models import Classes, Ranks, RegistrationInfo, Rounds, RaceChart, Roster
-from derby.core.common import allocate_to_heats, allocate_to_lanes
+from derby.core.models import RegistrationInfo, RaceChart
+from derby.core.common import (
+    allocate_to_heats, allocate_to_lanes, step, create_class, create_ranks, create_round, create_race_roster
+)
 
 logger = logging.getLogger(__name__)
 
@@ -14,11 +15,6 @@ FileRecord = namedtuple('FileRecord', 'carid lastname firstname group'.split())
 
 
 STEPS = []
-def step(fn):
-    STEPS.append(fn)
-    def inner(*args, **kwargs):
-        fn(*args, **kwargs)
-    return inner
 
 
 class Command:
@@ -29,26 +25,20 @@ class Command:
 
     def run(self):
         logger.info('Starting prelims')
-        for i, step in enumerate(STEPS, 1):
+        for i, _step in enumerate(STEPS, 1):
             logger.info(f'Doing {step.__name__}, step {i} of {len(STEPS)}')
-            step(self)
+            _step(self)
 
     @step
     def create_class(self):
-        self.classid = Classes(classid=self.config['class_id'], class_field=self.config['class_name'])
-        self.classid.save()
+        self.classid = create_class(self.config['class_id'], self.config['class_name'])
 
     @step
     def create_ranks(self):
-        self.ranks = {}
-        for i, den in enumerate(self.config['ranks']):
-            obj = Ranks(
-                rankid=self.config['ranks_starting_id'] + i,
-                rank=den,
-                classid=self.classid,
-            )
-            obj.save()
-            self.ranks[den] = obj
+        self.ranks = create_ranks(
+            names=self.config['ranks'], starting_id=self.config['ranks_starting_id'],
+            ending_id=self.config['ranks_ending_id'], parent_class=self.classid
+        )
 
     @step
     def import_csv(self):
@@ -57,12 +47,13 @@ class Command:
         logger.debug('Deleting any existing registration info objects')
         RegistrationInfo.objects.filter(
             pk__gte=self.config['registration_info_firstid'],
-            pk__lte=self.config['registration_info_lastid']
+            pk__lte=self.config['registration_info_lastid'],
         ).delete()
 
+        rank_lookup = {rank.rank: rank for rank in self.ranks}
         saved, skipped = 0, 0
         for i, record in enumerate(csv_records):
-            rank = self.ranks.get(record.group)
+            rank = rank_lookup.get(record.group)
             if rank is None:
                 logger.warn(f'No Rank found for {record.group} for record {record}')
                 skipped += 1
@@ -73,8 +64,19 @@ class Command:
         logger.info(f'Done with import_csv, saved {saved} and skipped {skipped} records')
 
     @step
+    def create_round(self):
+        self.round = create_round(
+            pk=self.config['round_id'], number=self.config['round_number'], parent_class=self.classid,
+            chart_type=self.config['chart_type'], phase=self.config['phase'],
+        )
+
+    @step
+    def create_race_roster(self):
+        racers = RegistrationInfo.objects.filter(classid=self.classid)
+        create_race_roster(racers, parent_class=self.classid, round=self.round)
+
+    @step
     def schedule(self):
-        self.round = self._persist_round()
         racers = RegistrationInfo.objects.filter(classid=self.classid)
         heats = self._create_heats(racers, randomize=self.randomize_lanes)
         self._persist_schedule(heats)
@@ -106,30 +108,11 @@ class Command:
                         phase=self.config['phase'],
                     )
                     obj.save()
-                    if car_lane.car:
-                        obj = Roster(
-                            id=result_idx,
-                            classid=self.classid,
-                            round=self.round,
-                            racer=car_lane.car,
-                        )
-                        obj.save()
                     saved += 1
                 except Exception as ex:
                     logger.warning(f'Failed to persist RaceChart entry with exception {ex}')
                     skipped += 1
         logger.info(f'Saved {saved} and skipped {skipped} race chart entries')
-
-    def _persist_round(self):
-        obj = Rounds(
-            id=self.config['round_id'],
-            round=self.config['round'],
-            classid=self.classid,
-            charttype=self.config['chart_type'],
-            phase=self.config['phase'],
-        )
-        obj.save()
-        return obj
 
     def _read_csv(self, filepath):
         records = []
