@@ -134,7 +134,7 @@ class RegistrationInfo(models.Model):
         return self.__class__(**values)
 
     def __str__(self):
-        return f'({self.racerid}) {self.carnumber:03d} {self.lastname}, {self.firstname}'
+        return f'({self.id}) {self.carnumber:03d} {self.lastname}, {self.firstname}'
 
 
 class Roster(models.Model):

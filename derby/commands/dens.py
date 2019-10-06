@@ -1,12 +1,11 @@
-from collections import defaultdict
 import logging
 
 from django.conf import settings
 
-from derby.core.models import Classes, RegistrationInfo
+from derby.core.models import Classes, RegistrationInfo, Rounds, Ranks
 from derby.core.common import (
-    allocate_to_heats, allocate_to_lanes, step, create_class, create_ranks, create_round, create_race_roster,
-    create_heats, create_race_chart
+    step, create_class, create_ranks, create_round, create_race_roster,
+    create_heats, create_race_chart, select_racers_from_race_results
 )
 
 logger = logging.getLogger(__name__)
@@ -22,7 +21,7 @@ class Command:
 
     def run(self):
         for i, _step in enumerate(STEPS, 1):
-            logger.info(f'Doing {step.__name__}, step {i} of {len(STEPS)}')
+            logger.info(f'Doing {_step.__name__}, step {i} of {len(STEPS)}')
             _step(self)
 
     @step
@@ -60,14 +59,22 @@ class Command:
 
     @step
     def schedule(self):
-        by_den = defaultdict(list)
-        for racer in RegistrationInfo.objects.filter(classid=self.classid):
-            by_den[racer.rank].append(racer)
+        prelims_class = Classes.objects.get(pk=settings.ROUND_CONFIG['prelims']['class_id'])
+        prelims_round = Rounds.objects.get(pk=settings.ROUND_CONFIG['prelims']['round_id'])
         heats = []
         for rank in self.ranks:
-            den_racers = by_den.get(rank)
-            if den_racers:
-                heats.extend(create_heats(den_racers, randomize=self.randomize_lanes))
+            prelims_rank = Ranks.objects.get(classid=prelims_class, rank=rank.rank)
+            racers = select_racers_from_race_results(
+                prelims_class, prelims_round, ranks=prelims_rank, select='fastest', exclude_dnf=False
+            )
+            if not racers:
+                logger.warn(f'No racers found for den finals for {rank.rank}')
+                continue
+            # we get back the racers in fastest to slowest order
+            # but we want to schedule them into heats in the opposite order, so reverse in place here
+            racers.reverse()
+            logger.info(f'Allocating {len(racers)} racers to heats for {rank.rank}')
+            heats.extend(create_heats(racers, randomize=self.randomize_lanes))
         create_race_chart(
             heats, self.config['racechart_id_range'].start, self.classid, self.round, self.config['phase']
         )

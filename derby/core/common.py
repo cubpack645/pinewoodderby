@@ -1,4 +1,5 @@
 from collections import namedtuple
+import functools
 import logging
 import random
 
@@ -121,6 +122,33 @@ def create_race_roster(racers, parent_class, round):
         obj.save()
 
 
+def select_racers_from_race_results(parent_class, round, ranks=None, select='fastest', limit=None, exclude_dnf=True):
+    filters = dict(
+        classid=parent_class,
+        round=round,
+        racer__isnull=False,
+    )
+    if exclude_dnf:
+        filters['finishtime__lt'] = settings.DNF_THRESHOLD
+    if ranks:
+        if not isinstance(ranks, (list, tuple)):
+            ranks = [ranks]
+        filters['racer__rank__in'] = ranks
+    results = RaceChart.objects.filter(**filters).select_related('racer').order_by('finishtime')
+
+    # now lets iterate through these in fastest or slowest order, collecting racer objects as we go
+    results = iter(results) if select == 'fastest' else reversed(results)
+    racers, seen = [], set()
+    for result in results:
+        if result.racer not in seen:
+            seen.add(result.racer)
+            result.racer.finishtime = result.finishtime
+            racers.append(result.racer)
+    if limit:
+        racers = racers[:limit]
+    return racers
+
+
 def step(fn):
     """
     Decorator which adds a method in a class to a list of STEPS to be executed
@@ -128,6 +156,7 @@ def step(fn):
     """
     fn.__globals__['STEPS'].append(fn)
 
+    @functools.wraps(fn)
     def inner(fn):
         def wrapped(*args, **kwargs):
             return fn(*args, **kwargs)

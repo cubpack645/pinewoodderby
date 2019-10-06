@@ -27,7 +27,7 @@ class Command:
     def run(self):
         logger.info('Starting prelims')
         for i, _step in enumerate(STEPS, 1):
-            logger.info(f'Doing {step.__name__}, step {i} of {len(STEPS)}')
+            logger.info(f'Doing {_step.__name__}, step {i} of {len(STEPS)}')
             _step(self)
 
     @step
