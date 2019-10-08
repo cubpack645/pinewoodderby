@@ -188,5 +188,6 @@ ROUND_CONFIG = {
         'chart_type': -1,
         'phase': 1,
         'racechart_id_range': IdRange(3001, 4000),
+        'count': 18,
     },
 }

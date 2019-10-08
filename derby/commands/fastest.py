@@ -1,3 +1,10 @@
+"""
+We will pick the fastest 18 racers from the prelims, excluding siblings
+The slowest 16 of these go into 2 heats (semi-finals)
+
+from which the fastest 3 from each semi-final will proceed to a grand-final,
+joining the fastest 2 from the prelims
+"""
 import logging
 
 from django.conf import settings
@@ -25,11 +32,10 @@ class Command(BaseRoundCommand):
         prelims_class = Classes.objects.get(pk=settings.ROUND_CONFIG['prelims']['class_id'])
         prelims_round = Rounds.objects.get(pk=settings.ROUND_CONFIG['prelims']['round_id'])
         prelims_ranks_ex_siblings = Ranks.objects.filter(classid=prelims_class).exclude(rank__in=settings.SIBLINGS)
-        logger.debug('Pack Slowest ranks are: {}'.format('\n'.join(str(o) for o in prelims_ranks_ex_siblings)))
         self.racers = []
         for i, racer in enumerate(select_racers_from_race_results(
             prelims_class, prelims_round, ranks=prelims_ranks_ex_siblings,
-            select='slowest',
+            select='fastest',
             limit=self.config['count'],
         )):
             pk = self.config['registrationinfo_id_range'].start + i
@@ -41,10 +47,14 @@ class Command(BaseRoundCommand):
 
     @step
     def schedule(self):
-        logger.info(f'Allocating {len(self.racers)} racers to heats for Pack Slowest')
-        for i, racer in enumerate(self.racers, 1):
+        logger.debug(f'Pack Fastest -- the following go direct to the final:')
+        for i, racer in enumerate(self.racers[:2], 1):
             logger.debug(f'{i:02d} {racer.finishtime:.3f} {racer}')
-        heats = create_heats(self.racers, randomize=self.randomize_lanes)
+        logger.debug(f'Pack Fastest -- the following go to the semi-final:')
+        for i, racer in enumerate(self.racers[2:], 1):
+            logger.debug(f'{i:02d} {racer.finishtime:.3f} {racer}')
+        semifinalists = self.racers[2:]
+        heats = create_heats(semifinalists, randomize=self.randomize_lanes)
         create_race_chart(
             heats, self.config['racechart_id_range'].start, self.parent_class, self.round, self.config['phase']
         )
