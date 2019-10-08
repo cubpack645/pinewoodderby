@@ -132,6 +132,8 @@ STATIC_URL = '/static/'
 DENS_EX_SIBLINGS = ['Lion', 'Tiger', 'Wolf', 'Bear', 'Webelo 1', 'Webelo 2']
 SIBLINGS = ['Younger Siblings', 'Older Siblings']
 DENS = DENS_EX_SIBLINGS + SIBLINGS
+PACK_SLOWEST = 'Pack Slowest'
+PACK_FASTEST = 'Pack Fastest'
 
 LANES = 8
 MIN_CARS_PER_HEAT = 4
@@ -155,12 +157,36 @@ ROUND_CONFIG = {
         'class_name': 'Den Finals',
         'ranks_id_range': IdRange(11, 20),
         'ranks': DENS,
-        'registration_info_firstid': 1001,
-        'registration_info_lastid': 2000,
+        'registrationinfo_id_range': IdRange(1001, 2000),
         'round_id': 60,
         'round_number': 2,
         'chart_type': -1,
         'phase': 1,
         'racechart_id_range': IdRange(1001, 2000),
+    },
+    'slowest': {
+        'class_id': 3,
+        'class_name': 'Pack Slowest',
+        'ranks_id_range': IdRange(21, 30),
+        'ranks': [PACK_SLOWEST],
+        'registrationinfo_id_range': IdRange(2001, 3000),
+        'round_id': 70,
+        'round_number': 3,
+        'chart_type': -1,
+        'phase': 1,
+        'racechart_id_range': IdRange(2001, 3000),
+        'count': 8,
+    },
+    'fastest': {
+        'class_id': 4,
+        'class_name': 'Pack Fastest',
+        'ranks_id_range': IdRange(31, 40),
+        'ranks': [PACK_FASTEST],
+        'registrationinfo_id_range': IdRange(3001, 4000),
+        'round_id': 80,
+        'round_number': 4,
+        'chart_type': -1,
+        'phase': 1,
+        'racechart_id_range': IdRange(3001, 4000),
     },
 }

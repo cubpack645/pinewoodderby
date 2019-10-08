@@ -131,8 +131,10 @@ def select_racers_from_race_results(parent_class, round, ranks=None, select='fas
     if exclude_dnf:
         filters['finishtime__lt'] = settings.DNF_THRESHOLD
     if ranks:
-        if not isinstance(ranks, (list, tuple)):
+        if isinstance(ranks, Ranks):
             ranks = [ranks]
+        elif not isinstance(ranks, (list, tuple)):
+            ranks = list(ranks)
         filters['racer__rank__in'] = ranks
     results = RaceChart.objects.filter(**filters).select_related('racer').order_by('finishtime')
 

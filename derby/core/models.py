@@ -96,6 +96,13 @@ class Ranks(models.Model):
         managed = False
         db_table = 'Ranks'
 
+    def __str__(self):
+        return self.rank
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(id={self.id!r}, rank={self.rank!r}, classid={self.classid!r})'
+
+
 
 class RegistrationInfo(models.Model):
     id = models.AutoField(db_column='RacerID', primary_key=True)  # Field name made lowercase.
