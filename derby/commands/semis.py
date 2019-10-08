@@ -6,6 +6,7 @@ from which the fastest 3 from each semi-final will proceed to a grand-final,
 joining the fastest 2 from the prelims
 """
 import logging
+import random
 
 from django.conf import settings
 
@@ -54,6 +55,7 @@ class Command(BaseRoundCommand):
         for i, racer in enumerate(self.racers[2:], 1):
             logger.debug(f'{i:02d} {racer.finishtime:.3f} {racer}')
         semifinalists = self.racers[2:]
+        random.shuffle(semifinalists)
         heats = create_heats(semifinalists, randomize=self.randomize_lanes)
         create_race_chart(
             heats, self.config['racechart_id_range'].start, self.parent_class, self.round, self.config['phase']

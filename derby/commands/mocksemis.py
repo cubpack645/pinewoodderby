@@ -10,7 +10,7 @@ from derby.core.models import Classes, RaceChart, Rounds
 class Command:
     def __init__(self, args):
         self.args = args
-        self.config = settings.ROUND_CONFIG['fastest']
+        self.config = settings.ROUND_CONFIG['semis']
         self.parent_class = Classes.objects.get(pk=self.config['class_id'])
         self.round = Rounds.objects.get(pk=self.config['round_id'])
         self.min = 2.8

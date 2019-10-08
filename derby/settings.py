@@ -177,11 +177,11 @@ ROUND_CONFIG = {
         'racechart_id_range': IdRange(2001, 3000),
         'count': 8,
     },
-    'fastest': {
+    'semis': {
         'class_id': 4,
-        'class_name': 'Pack Fastest',
+        'class_name': 'Fastest - Semi Finals',
         'ranks_id_range': IdRange(31, 40),
-        'ranks': [PACK_FASTEST],
+        'ranks': ['Semi-Finals'],
         'registrationinfo_id_range': IdRange(3001, 4000),
         'round_id': 80,
         'round_number': 4,
@@ -189,5 +189,17 @@ ROUND_CONFIG = {
         'phase': 1,
         'racechart_id_range': IdRange(3001, 4000),
         'count': 18,
+    },
+    'final': {
+        'class_id': 5,
+        'class_name': 'Fastest - Grand Final',
+        'ranks_id_range': IdRange(41, 50),
+        'ranks': ['Final'],
+        'registrationinfo_id_range': IdRange(3001, 4000),
+        'round_id': 90,
+        'round_number': 5,
+        'chart_type': -1,
+        'phase': 1,
+        'racechart_id_range': IdRange(4001, 5000),
     },
 }
