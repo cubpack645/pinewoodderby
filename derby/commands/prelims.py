@@ -25,7 +25,7 @@ class Command(BaseRoundCommand):
         csv_records = self._read_csv(self.args.roster)
         logger.info(f'Loaded {len(csv_records)} records from file {self.args.roster}')
 
-        rank_lookup = {rank.rank: rank for rank in self.ranks}
+        rank_lookup = {rank.rank[3:]: rank for rank in self.ranks}
         saved, skipped = 0, 0
         start_idx = self.config['registrationinfo_id_range'].start
         racers = []

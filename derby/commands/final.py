@@ -2,7 +2,7 @@ import logging
 
 from django.conf import settings
 
-from derby.core.models import Classes, Rounds
+from derby.core.models import Classes, Rounds, Ranks
 from derby.core.common import (
     step, create_race_roster, create_heats, create_race_chart, select_racers_from_race_results
 )
@@ -46,8 +46,9 @@ class Command(BaseRoundCommand):
     def _get_prelims_finalists(self):
         prelims_class = Classes.objects.get(pk=settings.ROUND_CONFIG['prelims']['class_id'])
         prelims_round = Rounds.objects.get(pk=settings.ROUND_CONFIG['prelims']['round_id'])
+        prelims_ranks_ex_siblings = Ranks.objects.filter(classid=prelims_class).exclude(rank__in=settings.SIBLINGS)
         racers = select_racers_from_race_results(
-            prelims_class, prelims_round,
+            prelims_class, prelims_round, ranks=prelims_ranks_ex_siblings,
             select='fastest',
             limit=2,
         )

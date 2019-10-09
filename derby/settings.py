@@ -129,8 +129,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-DENS_EX_SIBLINGS = ['Lion', 'Tiger', 'Wolf', 'Bear', 'Webelo 1', 'Webelo 2']
-SIBLINGS = ['Younger Siblings', 'Older Siblings']
+DENS_EX_SIBLINGS = ['1. Lion', '2. Tiger', '3. Wolf', '4. Bear', '5. Webelo 1', '6. Webelo 2']
+SIBLINGS = ['7. Younger Siblings', '8. Older Siblings']
 DENS = DENS_EX_SIBLINGS + SIBLINGS
 PACK_SLOWEST = 'Pack Slowest'
 PACK_FASTEST = 'Pack Fastest'
@@ -142,7 +142,7 @@ DNF_THRESHOLD = 5.0
 ROUND_CONFIG = {
     'prelims': {
         'class_id': 1,
-        'class_name': 'Prelims',
+        'class_name': '1. Prelims',
         'ranks_id_range': IdRange(1, 10),
         'ranks': DENS,
         'registrationinfo_id_range': IdRange(1, 1000),
@@ -154,7 +154,7 @@ ROUND_CONFIG = {
     },
     'dens': {
         'class_id': 2,
-        'class_name': 'Den Finals',
+        'class_name': '2. Den Finals',
         'ranks_id_range': IdRange(11, 20),
         'ranks': DENS,
         'registrationinfo_id_range': IdRange(1001, 2000),
@@ -166,7 +166,7 @@ ROUND_CONFIG = {
     },
     'slowest': {
         'class_id': 3,
-        'class_name': 'Pack Slowest',
+        'class_name': '3. Pack Slowest',
         'ranks_id_range': IdRange(21, 30),
         'ranks': [PACK_SLOWEST],
         'registrationinfo_id_range': IdRange(2001, 3000),
@@ -179,7 +179,7 @@ ROUND_CONFIG = {
     },
     'semis': {
         'class_id': 4,
-        'class_name': 'Fastest - Semi Finals',
+        'class_name': '4. Fastest - Semi Finals',
         'ranks_id_range': IdRange(31, 40),
         'ranks': ['Semi-Finals'],
         'registrationinfo_id_range': IdRange(3001, 4000),
@@ -192,7 +192,7 @@ ROUND_CONFIG = {
     },
     'final': {
         'class_id': 5,
-        'class_name': 'Fastest - Grand Final',
+        'class_name': '5. Fastest - Grand Final',
         'ranks_id_range': IdRange(41, 50),
         'ranks': ['Final'],
         'registrationinfo_id_range': IdRange(3001, 4000),

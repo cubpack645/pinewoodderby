@@ -17,7 +17,7 @@ class Command:
             self._create_round_config(name, config)
 
     def _create_round_config(self, name, config):
-        parent_class = create_class(class_id=config['class_id'], class_name=name)
+        parent_class = create_class(class_id=config['class_id'], class_name=config['class_name'])
         create_ranks(
             names=config['ranks'], starting_id=config['ranks_id_range'].start,
             ending_id=config['ranks_id_range'].end, parent_class=parent_class
