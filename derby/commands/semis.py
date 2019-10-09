@@ -55,8 +55,18 @@ class Command(BaseRoundCommand):
         for i, racer in enumerate(self.racers[2:], 1):
             logger.debug(f'{i:02d} {racer.finishtime:.3f} {racer}')
         semifinalists = self.racers[2:]
-        random.shuffle(semifinalists)
-        heats = create_heats(semifinalists, randomize=self.randomize_lanes)
+
+        # we want to 'stripe' the semifinalists, ie. 1st, 3rd, 5th, etc in #1 and 2nd, 4th, 6th, etc in #2
+        # so that the semi finals are somewhat balanced, making it fair to then take the top 3 from each semi
+        reordered = semifinalists[::2] + semifinalists[1::2]
+        logger.debug(f'Pack Fastest -- After striping the semi-finalists between 2 semis, here are the first')
+        for i, racer in enumerate(reordered[:8], 1):
+            logger.debug(f'{i:02d} {racer.finishtime:.3f} {racer}')
+        logger.debug(f'Pack Fastest -- and here are the 2nd')
+        for i, racer in enumerate(reordered[8:], 1):
+            logger.debug(f'{i:02d} {racer.finishtime:.3f} {racer}')
+
+        heats = create_heats(reordered, randomize=self.randomize_lanes)
         create_race_chart(
             heats, self.config['racechart_id_range'].start, self.parent_class, self.round, self.config['phase']
         )
