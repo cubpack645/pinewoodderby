@@ -122,12 +122,17 @@ def create_race_roster(racers, parent_class, round):
         obj.save()
 
 
-def select_racers_from_race_results(parent_class, round, ranks=None, select='fastest', limit=None, exclude_dnf=True):
+def select_racers_from_race_results(parent_class, round, ranks=None, heats=None, select='fastest',
+                                    limit=None, exclude_dnf=True):
     filters = dict(
         classid=parent_class,
         round=round,
         racer__isnull=False,
     )
+    if heats:
+        if isinstance(heats, int):
+            heats = [heats]
+        filters['heat__in'] = heats
     if exclude_dnf:
         filters['finishtime__lt'] = settings.DNF_THRESHOLD
     if ranks:

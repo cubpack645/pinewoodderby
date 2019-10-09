@@ -33,11 +33,13 @@ class Command(BaseRoundCommand):
     def _get_semi_finalists(self):
         semis_class = Classes.objects.get(pk=settings.ROUND_CONFIG['semis']['class_id'])
         semis_round = Rounds.objects.get(pk=settings.ROUND_CONFIG['semis']['round_id'])
-        racers = select_racers_from_race_results(
-            semis_class, semis_round,
-            select='fastest',
-            limit=6,
-        )
+        racers = []
+        for heat in (1, 2):
+            racers.extend(select_racers_from_race_results(
+                semis_class, semis_round, heats=heat,
+                select='fastest',
+                limit=3,
+            ))
         logger.debug('The following qualified from the semi-finals:')
         for i, racer in enumerate(racers, 1):
             logger.debug(f'{i:02d} {racer.finishtime:.3f} {racer}')
