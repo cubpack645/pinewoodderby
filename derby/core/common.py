@@ -23,7 +23,7 @@ def create_heats(racers, randomize=True):
 def create_race_chart(heats, starting_idx, parent_class, round, phase):
     saved, skipped = 0, 0
     result_idx = starting_idx
-    for heat_idx, heat in enumerate(heats):
+    for heat_idx, heat in enumerate(heats, 1):
         for car_lane in heat:
             try:
                 obj = RaceChart(
