@@ -81,6 +81,7 @@ WSGI_APPLICATION = 'derby.wsgi.application'
 
 PRISTINE_DB = os.path.join(BASE_DIR, 'resources', 'pristine.sqlite')
 LIVE_DB = os.path.join(BASE_DIR, 'live.sqlite')
+BACKUPS_DIR = os.path.join(BASE_DIR, 'backups')
 
 DATABASES = {
     'default': {
@@ -138,6 +139,10 @@ PACK_FASTEST = 'Pack Fastest'
 LANES = 8
 MIN_CARS_PER_HEAT = 4
 DNF_THRESHOLD = 5.0
+
+BACKUP_BEFORE = [
+    'db', 'rounds', 'prelims', 'mockprelims', 'dens', 'mockdens', 'slowest', 'semis', 'mocksemis', 'final'
+]
 
 ROUND_CONFIG = {
     'prelims': {

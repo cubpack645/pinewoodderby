@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import argparse
-import colorlog
 import importlib
 import logging
 import os
@@ -8,6 +7,9 @@ import os
 import django
 from django.conf import settings
 django.setup()      # noqa
+
+from derby.utils import configure_logging
+from derby.core.backups import BackupHelper
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +20,7 @@ COMMANDS = [
 
 
 def main(args):
+    backups = BackupHelper()
     cmd_classes, error_count = [], 0
     # first make sure we recognise all actions and can load their corresponding cmd classes
     for action in args.actions:
@@ -44,6 +47,7 @@ def main(args):
 
     for i, (action, cls) in enumerate(zip(args.actions, cmd_classes), 1):
         logger.info(f'Dispatching {action}, action {i} of {len(args.actions)}')
+        backups.take_backup_if_required(action)
         try:
             cls(args).run()
         except Exception as ex:
@@ -56,29 +60,12 @@ def parse_args():
     parser.add_argument('-r', '--roster', default=os.path.join(settings.RESOURCES_DIR, 'roster.csv'))
     parser.add_argument('-d', '--dryrun', action='store_true', default=False,
                         help='Allows times to be simulated for races (via mock{*} commands)')
-    parser.add_argument('-v', '--verbose', action='count', default=2)
+    parser.add_argument('-v', '--verbose', action='count', default=1)
 
     dbgroup = parser.add_mutually_exclusive_group(required=False)
     dbgroup.add_argument('--pristine', action='store_true', default=False)
     dbgroup.add_argument('--2019', action='store_true', default=False)
     return parser.parse_args()
-
-
-def configure_logging(level):
-    handler = colorlog.StreamHandler()
-    handler.setFormatter(colorlog.ColoredFormatter(
-        '%(log_color)s%(levelname)s:%(name)s:%(message)s',
-        log_colors={
-            'DEBUG': 'cyan',
-            'INFO': 'green',
-            'WARNING': 'yellow',
-            'ERROR': 'red',
-            'CRITICAL': 'red,bg_white',
-        },
-    ))
-    logger = colorlog.getLogger()
-    logger.addHandler(handler)
-    logger.setLevel(level)
 
 
 if __name__ == '__main__':
