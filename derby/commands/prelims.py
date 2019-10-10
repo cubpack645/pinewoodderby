@@ -23,7 +23,7 @@ class Command(BaseRoundCommand):
     @step
     def create_racers(self):
         csv_records = self._read_csv(self.args.roster)
-        logger.info(f'Loaded {len(csv_records)} records from file {self.args.roster}')
+        logger.warning(f'Loaded {len(csv_records)} records from file {self.args.roster}')
 
         rank_lookup = {rank.rank[3:]: rank for rank in self.ranks}
         saved, skipped = 0, 0
@@ -32,7 +32,7 @@ class Command(BaseRoundCommand):
         for i, record in enumerate(csv_records):
             rank = rank_lookup.get(record.group)
             if rank is None:
-                logger.warning(f'No Rank found for {record.group} for record {record}')
+                logger.error(f'No Rank found for {record.group} for record {record}')
                 skipped += 1
                 continue
             obj = RegistrationInfo.from_import(start_idx + i, record, self.parent_class, rank)

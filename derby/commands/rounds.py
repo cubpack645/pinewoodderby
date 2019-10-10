@@ -13,7 +13,7 @@ class Command:
 
     def run(self):
         for name, config in settings.ROUND_CONFIG.items():
-            logger.info(f'Creating round config for {name}')
+            logger.debug(f'Creating round config for {name}')
             self._create_round_config(name, config)
 
     def _create_round_config(self, name, config):
