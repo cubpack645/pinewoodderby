@@ -2,9 +2,9 @@ bin/pack is the single entry point, you call it with different command arguments
 
 The first command is to prepare a blank database 
 
-	pack db --pristine
+	pack --pristine db rounds
 		this copies pristine.sqlite from the resources database to the live location (live.sqlite)
-
+		the rounds command creates the necessary Classes table config in the database, specifying each round
 	
 The next step is to create the prelims round.  This includes loading racer records from a roster csv file
 
@@ -62,7 +62,7 @@ You can create mock results for certain rounds to allow for end-to-end testing o
 
 For example:
 
-	pack --pristine db prelims dens mockprelims mockdens slowest semis mocksemis final
+	pack --pristine db rounds prelims dens mockprelims mockdens slowest semis mocksemis final
 
 	will do everything up to (but excluding) the Pack Slowest and Pack Final timings
 
