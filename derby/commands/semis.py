@@ -6,7 +6,6 @@ from which the fastest 3 from each semi-final will proceed to a grand-final,
 joining the fastest 2 from the prelims
 """
 import logging
-import random
 
 from django.conf import settings
 
