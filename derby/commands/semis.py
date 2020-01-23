@@ -37,6 +37,7 @@ class Command(BaseRoundCommand):
             prelims_class, prelims_round, ranks=prelims_ranks_ex_siblings,
             select='fastest',
             limit=self.config['count'],
+            average=True,
         )):
             pk = self.config['registrationinfo_id_range'].start + i
             obj = racer.clone_for_class_and_rank(pk, self.parent_class, self.ranks[0])

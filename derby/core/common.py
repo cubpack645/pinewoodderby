@@ -5,7 +5,7 @@ import random
 
 from django.conf import settings
 
-from derby.core.models import Classes, Ranks, Rounds, Roster, RaceChart
+from derby.core.models import Classes, Ranks, Rounds, Roster, RaceChart, RegistrationInfo
 
 logger = logging.getLogger(__name__)
 
@@ -122,8 +122,34 @@ def create_race_roster(racers, parent_class, round):
         obj.save()
 
 
+
+class Averager:
+    def __init__(self, results):
+        self.results = results
+
+    def average(self):
+        # first pass, accumulate list of times for each racer
+        by_racer = {}
+        for result in self.results:
+            racer_result = by_racer.get(result.racer)
+            if racer_result is None:
+                racer_result = result
+                racer_result.times = []
+                by_racer[racer_result.racer] = racer_result
+            if result.finishtime is not None:
+                racer_result.times.append(result.finishtime)
+        # second pass, average the times
+        results = []
+        for racer, result in by_racer.items():
+            if result.times:
+                result.finishtime = sum(result.times) / len(result.times)
+                results.append(result)
+        results.sort(key=lambda i: i.finishtime)
+        return results
+
+
 def select_racers_from_race_results(parent_class, round, ranks=None, heats=None, select='fastest',
-                                    limit=None, exclude_dnf=True):
+                                    limit=None, exclude_dnf=True, average=False):
     filters = dict(
         classid=parent_class,
         round=round,
@@ -142,6 +168,9 @@ def select_racers_from_race_results(parent_class, round, ranks=None, heats=None,
             ranks = list(ranks)
         filters['racer__rank__in'] = ranks
     results = RaceChart.objects.filter(**filters).select_related('racer').order_by('finishtime')
+
+    if average:
+        results = Averager(results).average()
 
     # now lets iterate through these in fastest or slowest order, collecting racer objects as we go
     results = iter(results) if select == 'fastest' else reversed(results)

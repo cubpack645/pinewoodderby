@@ -41,9 +41,10 @@ class Command(BaseRoundCommand):
         for rank in self.ranks:
             prelims_rank = prelims_ranks[rank.rank]
             racers = select_racers_from_race_results(
-                prelims_class, prelims_round, ranks=[prelims_rank], select='fastest', exclude_dnf=False
-            if not racers:
+                prelims_class, prelims_round, ranks=[prelims_rank], select='fastest', exclude_dnf=False,
+                average=True
             )
+            if not racers:
                 logger.warn(f'No racers found for den finals for {rank.rank}')
                 continue
             # we get back the racers in fastest to slowest order
