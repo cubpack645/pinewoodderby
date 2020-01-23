@@ -26,6 +26,8 @@ class Command(BaseRoundCommand):
         rank_lookup = {rank.rank: rank for rank in self.ranks}
         racers = []
         for i, racer in enumerate(prelim_racers, 0):
+            if racer.firstname == 'xCian':
+                import pdb; pdb.set_trace()
             pk = self.config['registrationinfo_id_range'].start + i
             obj = racer.clone_for_class_and_rank(pk, self.parent_class, rank_lookup[racer.rank.rank])
             obj.save()
@@ -37,6 +39,7 @@ class Command(BaseRoundCommand):
         prelims_class = Classes.objects.get(pk=settings.ROUND_CONFIG['prelims']['class_id'])
         prelims_round = Rounds.objects.get(pk=settings.ROUND_CONFIG['prelims']['round_id'])
         prelims_ranks = {obj.rank: obj for obj in Ranks.objects.filter(classid=prelims_class)}
+        racer_lookup = {o.carnumber: o for o in RegistrationInfo.objects.filter(classid=self.parent_class)}
         heats = []
         for rank in self.ranks:
             prelims_rank = prelims_ranks[rank.rank]
@@ -50,6 +53,7 @@ class Command(BaseRoundCommand):
             # we get back the racers in fastest to slowest order
             # but we want to schedule them into heats in the opposite order, so reverse in place here
             racers.reverse()
+            racers = [racer_lookup.get(o.carnumber) for o in racers]
             logger.info(f'Allocating {len(racers)} racers to heats for {rank.rank}')
             heats.extend(create_heats(racers, randomize=self.randomize_lanes))
         create_race_chart(

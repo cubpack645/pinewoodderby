@@ -24,6 +24,7 @@ class Command:
         results = list(RaceChart.objects.filter(classid=self.classid, round=self.round, racer__isnull=False))
         byheat = defaultdict(list)
         for result in results:
+            print(result.racer.rank.id)
             result.finishtime = self.random_time
             result.completed = timezone.now()
             result.save()
