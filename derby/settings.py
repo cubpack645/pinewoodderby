@@ -129,7 +129,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 DENS_EX_SIBLINGS = ['1. Lion', '2. Tiger', '3. Wolf', '4. Bear', '5. Webelo 1', '6. Webelo 2']
 SIBLINGS = ['7. Younger Siblings', '8. Older Siblings']
 DENS = DENS_EX_SIBLINGS + SIBLINGS
@@ -138,7 +137,7 @@ PACK_FASTEST = 'Pack Fastest'
 
 LANES = 8
 MIN_CARS_PER_HEAT = 4
-DNF_THRESHOLD = 5.0
+DNF_THRESHOLD = 6.0
 
 BACKUP_BEFORE = [
     'db', 'rounds', 'prelims', 'mockprelims', 'dens', 'mockdens', 'slowest', 'semis', 'mocksemis', 'final'
