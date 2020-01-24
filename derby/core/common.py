@@ -159,14 +159,22 @@ def select_racers_from_race_results(parent_class, round, ranks=None, heats=None,
         if isinstance(heats, int):
             heats = [heats]
         filters['heat__in'] = heats
-    if exclude_dnf:
-        filters['finishtime__lt'] = settings.DNF_THRESHOLD
     if ranks:
         if isinstance(ranks, Ranks):
             ranks = [ranks]
         elif not isinstance(ranks, (list, tuple)):
             ranks = list(ranks)
         filters['racer__rank__in'] = ranks
+    if exclude_dnf:
+        # this little detour may seem odd...
+        filters['finishtime__gt'] = settings.DNF_THRESHOLD
+        excluded = RaceChart.objects.filter(**filters).select_related('racer').order_by('finishtime')
+        for obj in excluded:
+            logger.warn(f'DNF threshold exceeded for {obj.racer} with time {obj.finishtime}')
+        del filters['finishtime__gt']
+        # ok, detour over, back to the business at hand
+        filters['finishtime__lte'] = settings.DNF_THRESHOLD
+
     results = RaceChart.objects.filter(**filters).select_related('racer').order_by('finishtime')
 
     if average:

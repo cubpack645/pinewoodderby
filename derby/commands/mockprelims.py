@@ -17,7 +17,7 @@ class Command:
         self.classid = Classes.objects.get(pk=self.config['class_id'])
         self.round = Rounds.objects.get(pk=self.config['round_id'])
         self.min = 2.8
-        self.max = 6.8
+        self.max = 6.2
         self.range = self.max - self.min
 
     def run(self):

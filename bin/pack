@@ -60,7 +60,7 @@ def parse_args():
     parser.add_argument('-r', '--roster', default=os.path.join(settings.RESOURCES_DIR, 'roster.csv'))
     parser.add_argument('-d', '--dryrun', action='store_true', default=False,
                         help='Allows times to be simulated for races (via mock{*} commands)')
-    parser.add_argument('-v', '--verbose', action='count', default=1)
+    parser.add_argument('-v', '--verbose', action='count', default=2)
 
     dbgroup = parser.add_mutually_exclusive_group(required=False)
     dbgroup.add_argument('--pristine', action='store_true', default=False)
