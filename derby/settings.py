@@ -199,7 +199,7 @@ ROUND_CONFIG = {
         'class_name': '5. Fastest - Grand Final',
         'ranks_id_range': IdRange(41, 50),
         'ranks': ['Final'],
-        'registrationinfo_id_range': IdRange(3001, 4000),
+        'registrationinfo_id_range': IdRange(4001, 5000),
         'round_id': 90,
         'round_number': 5,
         'chart_type': -1,

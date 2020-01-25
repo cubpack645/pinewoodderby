@@ -53,6 +53,7 @@ class Command(BaseRoundCommand):
             prelims_class, prelims_round, ranks=prelims_ranks_ex_siblings,
             select='fastest',
             limit=2,
+            average=True,
         )
         logger.debug('The following qualified direct from the prelims:')
         for i, racer in enumerate(racers, 1):

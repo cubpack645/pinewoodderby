@@ -25,7 +25,7 @@ class Command:
         byheat = defaultdict(list)
         for result in results:
             result.finishtime = self.random_time
-            result.completed = timezone.now()
+            result.completed = timezone.now().replace(microsecond=0)
             result.save()
             byheat[result.heat].append(result)
         for heat in byheat.values():
