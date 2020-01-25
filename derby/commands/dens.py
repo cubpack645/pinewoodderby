@@ -26,8 +26,6 @@ class Command(BaseRoundCommand):
         rank_lookup = {rank.rank: rank for rank in self.ranks}
         racers = []
         for i, racer in enumerate(prelim_racers, 0):
-            if racer.firstname == 'xCian':
-                import pdb; pdb.set_trace()
             pk = self.config['registrationinfo_id_range'].start + i
             obj = racer.clone_for_class_and_rank(pk, self.parent_class, rank_lookup[racer.rank.rank])
             obj.save()
@@ -50,12 +48,13 @@ class Command(BaseRoundCommand):
             if not racers:
                 logger.warn(f'No racers found for den finals for {rank.rank}')
                 continue
-            # we get back the racers in fastest to slowest order
-            # but we want to schedule them into heats in the opposite order, so reverse in place here
-            racers.reverse()
             racers = [racer_lookup.get(o.carnumber) for o in racers]
             logger.info(f'Allocating {len(racers)} racers to heats for {rank.rank}')
-            heats.extend(create_heats(racers, randomize=self.randomize_lanes))
+            these_heats = create_heats(racers, randomize=self.randomize_lanes)
+            # we had scheduled the racers to heats in fastest to slowest order
+            # but for racing we want to do slowest to fastest, so reverse them here
+            these_heats.reverse()
+            heats.extend(these_heats)
         create_race_chart(
             heats, self.config['racechart_id_range'].start, self.parent_class, self.round, self.config['phase']
         )
