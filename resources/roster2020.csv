@@ -1,88 +1,79 @@
 Car #,Last Name,First Name,Group 
-102,Cruz,Enzo,Lion
-104,Meinberg,Evan,Lion
-105,Strum,Grant,Lion
-106,Bishop,Issac,Lion
-108,Shu,Kiran,Lion
-109,Van Veen,Luke,Lion
-201,Hedrick-Choi,Caden,Tiger
-202,Carlson,Cole,Tiger
-205,Schwartz,Eli,Tiger
-206,Petralia,Evan,Tiger
-207,McGovern,Jack,Tiger
-208,Norek,Jacob,Tiger
-209,Lichman,Jeffrey,Tiger
-211,Van Houten,Leo,Tiger
-212,Ehrhorn,Liam,Tiger
-213,Garner,Lochlan,Tiger
-215,Njaa,Matthew,Tiger
-216,Treat,Nathan,Tiger
-218,Lightsey,Riley,Tiger
-219,Raymond,Ty,Tiger
-220,Fairhurst,Will,Tiger
-301,Allen,Bennett,Wolf
-302,Roberts,Brecken,Wolf
-304,Rosenberg,Eli,Wolf
-306,Clark,Harrison,Wolf
-307,Morantes,Jackson,Wolf
-308, Terry,Jackson Wallace,Wolf
-310,Young,Joaquin,Wolf
-311,Borman,Kiran,Wolf
-318,Courter,Noah,Wolf
-319,Sturm,Alden,Wolf
-320,Hutchinson,Ethan,Wolf
-401,Vojta,Andrew,Bear
-402,Trimble,Bryson,Bear
-404,Ehrhorn,Caden,Bear
-405,Siu,David,Bear
-406,Feeley,Donncha,Bear
-407,Garner,Finley,Bear
-408,Lee,Gavin,Bear
-410,Callahan,Jack,Bear
-411,Fairhurst,Jack,Bear
-412,Lichman,Jamie,Bear
-413,David Kao,John,Bear
-415,DeBoy,Miles,Bear
-417,Lang,Tristan,Bear
-418,Meehan,Will,Bear
-501,Belhumeur,Chase,Webelo 1
-502,Adams,Dylan,Webelo 1
-503,Bishop,Ezra,Webelo 1
-504,Kaufman,Max,Webelo 1
-506,Simon,Max,Webelo 1
-507,Marek,Nate,Webelo 1
-508,Severo,Stefano,Webelo 1
-509,Caligari,Weston,Webelo 1
-602,Van Houten,Gabriel,Webelo 2
-603,Wang,Hanson,Webelo 2
-608,Strittmatter,Sebby,Webelo 2
-609,Clark,Spencer,Webelo 2
-701,Choy,Cameron,Webelo 2
-702,Cowen,Carter,Webelo 2
-703,De La Cruz,Cody,Webelo 2
-704,Siu,Daniel,Webelo 2
-708,Dinwiddie,Liam,Webelo 2
-709,Ehrhorn,Max,Webelo 2
-710,Terry,Robert Roy,Webelo 2
-711,Callahan,Ryan,Webelo 2
-712,Jarratt,Zachary,Webelo 2
-810,Bishop,Jorge,Younger Siblings
-819,Njaa,Kate,Younger Siblings
-815,Borman,Caden,Younger Siblings
-811,Feeley,Cian,Younger Siblings
-816,Simon,Ben,Younger Siblings
-804,Vojta,Melissa,Younger Siblings
-817,Severo,Leila,Younger Siblings
-802,Allen,Piper,Younger Siblings
-814,Strittmatter,Andres,Younger Siblings
-818,Scarlett,Jarratt,Younger Siblings
-806,Petralia,Isabella,Older Siblings
-809,Raymond,Lucy,Older Siblings
-812,De La Cruz,Ava,Older Siblings
-801,Rosenberg,Henry,Older Siblings
-803,Vojta,Valerie,Older Siblings
-807,Cowen,Katherine,Older Siblings
-808,Cowen,Lauren,Older Siblings
-805,Clark,Will,Older Siblings
-813,DebBoy,Olivia,Older Siblings
-820,Lang,Jordan,Older Siblings
+100,Feldman,Bodhi,Tiger
+101,Feeley,Cian,Tiger
+102,Meinberg,Evan,Tiger
+103,Crowley,Jack,Tiger
+104,Evans,James,Tiger
+105,Shu,Kiran,Tiger
+106,McGovern,Liam,Tiger
+107,Sousa,Luke,Tiger
+108,Van Veen,Luke,Tiger
+109,Rodriguez,Parker,Tiger
+111,Higgins,Trevor,Tiger
+200,Strittmatter,Andres,Wolf
+201,Hedrick Choi,Caden,Wolf
+203,Schwartz,Eli,Wolf
+204,Petralia,Evan,Wolf
+205,McGovern,Jack,Wolf
+206,Lichman,Jeffrey,Wolf
+207,Van Houten,Leo,Wolf
+208,Ehrhorn,Liam,Wolf
+209,Garner,Lochlan,Wolf
+210,Njaa,Matthew,Wolf
+213,Fairhurst,Will,Wolf
+214,Carlson,Cole,Wolf
+215,Treat,Nathan,Wolf
+216,White,Connor,Wolf
+301,Allen,Bennett,Bear
+302,Rosenberg,Eli,Bear
+303,Clark,Harrison,Bear
+304,Morantes,Jackson (Jax),Bear
+305,Terry,Jaxson Wallace,Bear
+306,Borman,Kiran,Bear
+307,Pollard,Max,Bear
+308,Mostepan,Nikolas,Bear
+309,Courter,Noah,Bear
+310,Allen,Piper,Bear
+312,Yanagimachi,Tyler,Bear
+313,Furtado,Nicole,Bear
+316,Young,Joaquin,Bear
+317,Turner,Hudson,Bear
+400,Vojta,Andrew,Webelo 1
+401,Long,Bryce,Webelo 1
+402,Trimble,Bryson,Webelo 1
+404,Ehrhorn,Caden,Webelo 1
+405,Siu,David,Webelo 1
+406,Feeley,Donncha,Webelo 1
+407,Garner,Finley,Webelo 1
+409,Callahan,Jack,Webelo 1
+410,Lichman,Jamie,Webelo 1
+411,McAlister,Mave,Webelo 1
+412,DeBoy,Miles,Webelo 1
+413,Lang,Tristan,Webelo 1
+415,NotRunning,NotRunning,Webelo 1
+416,Will,Meehan,Webelo 1
+418,Ethan,Barrios,Webelo 1
+419,Will,Chapman,Webelo 1
+420,Fairhurst,Jack,Webelo 1
+501,Kaufman,Max,Webelo 2
+503,Simon,Max,Webelo 2
+504,Caligari,Weston,Webelo 2
+600,Rosenberg,Henry,Siblings
+601,Hedrick Choi,Kyler,Siblings
+602,Clark,Will,Siblings
+603,Morantes,Zoe,Siblings
+604,Simon,Ben,Siblings
+605,Vojta,Christopher,Siblings
+606,Vojta,Melissa,Siblings
+607,Terry,Robert Roy,Siblings
+608,Sousa,Jake,Siblings
+609,Siu,Daniel,Siblings
+610,Feldman,Laila,Siblings
+611,Chapman,Julia,Siblings
+612,Petralia,Isabella,Siblings
+613,Crowley,Luke,Siblings
+614,Van Houten,Gabriel,Siblings
+615,Njaa,Kate,Siblings
+616,Shu,Maya,Siblings
+617,Yanagimachi,Reed,Siblings
+618,DeBoy,Olivia,Siblings
