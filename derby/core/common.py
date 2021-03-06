@@ -5,7 +5,7 @@ import random
 
 from django.conf import settings
 
-from derby.core.models import Classes, Ranks, Rounds, Roster, RaceChart, RegistrationInfo
+from derby.core.models import Classes, Ranks, Rounds, Roster, RaceChart
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +21,7 @@ def create_heats(racers, randomize=True):
 
 
 def create_race_chart(heats, starting_idx, parent_class, round, phase):
-    saved, skipped = 0, 0
+    saved, skipped, populated, empty = 0, 0, 0, 0
     result_idx = starting_idx
     for heat_idx, heat in enumerate(heats, 1):
         for car_lane in heat:
@@ -36,13 +36,17 @@ def create_race_chart(heats, starting_idx, parent_class, round, phase):
                     chartnumber=0 if car_lane.car is None else car_lane.car.carnumber,
                     phase=phase,
                 )
+                if car_lane.car is None:
+                    empty += 1
+                else:
+                    populated += 1
                 obj.save()
                 saved += 1
                 result_idx += 1
             except Exception as ex:
                 logger.warning(f'Failed to persist RaceChart entry with exception {ex}')
                 skipped += 1
-    logger.info(f'Saved {saved} and skipped {skipped} race chart entries')
+    logger.info(f'Saved {saved} and skipped {skipped} race chart entries, {populated} lanes filled, {empty} empty')
 
 
 def allocate_to_heats(records, lanes=settings.LANES, min_cars=settings.MIN_CARS_PER_HEAT):
@@ -120,7 +124,6 @@ def create_race_roster(racers, parent_class, round):
             racer=racer,
         )
         obj.save()
-
 
 
 class Averager:
