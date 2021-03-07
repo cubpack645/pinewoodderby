@@ -20,7 +20,7 @@ class AwardTypes(models.Model):
 class Awards(models.Model):
     awardid = models.AutoField(db_column='AwardID', primary_key=True)  # Field name made lowercase.
     awardname = models.TextField(db_column='AwardName')  # Field name made lowercase.
-    awardtypeid = models.ForeignKey(AwardTypes, models.DO_NOTHING, db_column='AwardTypeID')  # Field name made lowercase.
+    awardtypeid = models.ForeignKey(AwardTypes, models.DO_NOTHING, db_column='AwardTypeID')
     classid = models.IntegerField(db_column='ClassID', blank=True, null=True)  # Field name made lowercase.
     rankid = models.IntegerField(db_column='RankID', blank=True, null=True)  # Field name made lowercase.
     racerid = models.IntegerField(db_column='RacerID', blank=True, null=True)  # Field name made lowercase.
@@ -32,8 +32,8 @@ class Awards(models.Model):
 
 
 class Classes(models.Model):
-    classid = models.AutoField(db_column='ClassID', primary_key=True)  # Field name made lowercase.
-    class_field = models.TextField(db_column='Class', blank=True, null=True)  # Field name made lowercase. Field renamed because it was a Python reserved word.
+    classid = models.AutoField(db_column='ClassID', primary_key=True)
+    class_field = models.TextField(db_column='Class', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -67,7 +67,7 @@ class RaceCrew(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     lastname = models.TextField(db_column='LastName')  # Field name made lowercase.
     firstname = models.TextField(db_column='FirstName')  # Field name made lowercase.
-    positionid = models.ForeignKey(CrewPositions, models.DO_NOTHING, db_column='PositionID', blank=True, null=True)  # Field name made lowercase.
+    positionid = models.ForeignKey(CrewPositions, models.DO_NOTHING, db_column='PositionID', blank=True, null=True)
     customfield = models.TextField(db_column='CustomField', blank=True, null=True)  # Field name made lowercase.
     printed = models.TextField(db_column='Printed')  # Field name made lowercase. This field type is a guess.
     imagefile = models.TextField(db_column='ImageFile', blank=True, null=True)  # Field name made lowercase.
@@ -103,7 +103,6 @@ class Ranks(models.Model):
         return f'{self.__class__.__name__}(id={self.id!r}, rank={self.rank!r}, classid={self.classid!r})'
 
 
-
 class RegistrationInfo(models.Model):
     id = models.AutoField(db_column='RacerID', primary_key=True)  # Field name made lowercase.
     carnumber = models.IntegerField(db_column='CarNumber')  # Field name made lowercase.
@@ -128,6 +127,7 @@ class RegistrationInfo(models.Model):
             carnumber=int(record.carid),
             lastname=record.lastname,
             firstname=record.firstname,
+            carname=getattr(record, 'carname', ''),
             classid=classid,
             rank=rank,
             passedinspection=1,
@@ -215,7 +215,7 @@ class StandingsRound(models.Model):
     finishplacefinal = models.IntegerField(db_column='FinishPlaceFinal')  # Field name made lowercase.
     finishplace = models.IntegerField(db_column='FinishPlace')  # Field name made lowercase.
     time = models.FloatField(db_column='Time', blank=True, null=True)  # Field name made lowercase.
-    points = models.TextField(db_column='Points', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    points = models.TextField(db_column='Points', blank=True, null=True)  # This field type is a guess.
     avgtime = models.FloatField(db_column='AvgTime')  # Field name made lowercase.
     racerid = models.IntegerField(db_column='RacerID')  # Field name made lowercase.
     round = models.IntegerField(db_column='Round')  # Field name made lowercase.

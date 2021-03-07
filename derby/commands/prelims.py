@@ -8,7 +8,8 @@ from derby.commands.base_round import BaseRoundCommand
 
 logger = logging.getLogger(__name__)
 
-FileRecord = namedtuple('FileRecord', 'carid lastname firstname group'.split())
+FileRecordWithCarName = namedtuple('FileRecord', 'carid lastname firstname carname group '.split())
+FileRecord = namedtuple('FileRecord', 'carid lastname firstname group '.split())
 
 
 STEPS = []
@@ -56,10 +57,17 @@ class Command(BaseRoundCommand):
         records = []
         with open(filepath, 'r') as f:
             reader = csv.reader(f)
-            reader.__next__()
+            header = next(reader)
+            if len(header) == 4:
+                RecordType = FileRecord
+            elif len(header) == 5:
+                RecordType = FileRecordWithCarName
+            else:
+                raise ValueError(f'Bad CSV file format, unexpected number of fields in header row ({len(header)})')
+
             for row in reader:
                 try:
-                    records.append(FileRecord(*row))
+                    records.append(RecordType(*row))
                 except TypeError as ex:
                     logger.error(f'Problem with row {row}, exception was {ex}')
         return records
