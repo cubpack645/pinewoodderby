@@ -129,8 +129,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-DENS_EX_SIBLINGS = ['1. Tiger', '2. Wolf', '3. Bear', '4. Webelo 1', '5. Webelo 2']
-SIBLINGS = ['6. Siblings']
+DENS_EX_SIBLINGS = ['1. Lion', '2. Tiger', '3. Wolf', '4. Bear', '5. Webelo 1', '6. Webelo 2']
+SIBLINGS = ['7. Siblings']
 DENS = DENS_EX_SIBLINGS + SIBLINGS
 PACK_SLOWEST = 'Pack Slowest'
 PACK_FASTEST = 'Pack Fastest'
