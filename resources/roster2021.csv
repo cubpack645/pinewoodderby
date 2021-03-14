@@ -38,6 +38,7 @@ Number,First Name,Last Name,Car Name,Den
 309,Cian,Feeley,Waffle Mobile,Wolf
 310,Luke,Sousa,The Orange Tiger,Wolf
 311,Kiran,Shu,Pine Car,Wolf
+312,Evan,Meinberg,Electric Mustang,Wolf
 400,Jack,McGovern,Edgy Wedgy,Bear
 401,Eli,Scwartz,Lego Car,Bear
 402,Henry,Leveque,Blue bolt,Bear
@@ -54,6 +55,8 @@ Number,First Name,Last Name,Car Name,Den
 504,Tyler,Yanagimachi,Silver,Webelo 1
 505,Harrison,Clark,Ghost Rod,Webelo 1
 506,Nikolas,Mostepan,Bolt Speed,Webelo 1
+507,Andrew,Phan,Brown Car,Webelo 1
+508,Rowan,McAllister,3 Wheeler,Webelo 1
 600,Caden,Erhorn,Blackened,Webelo 2
 601,Donncha,Feeley,Pancake Mobile,Webelo 2
 602,William,Chapman,Black Bullet,Webelo 2
@@ -71,3 +74,4 @@ Number,First Name,Last Name,Car Name,Den
 706,Laila,Feldmen,Ocean,Siblings
 707,Maya,Shu,The Knife,Siblings
 708,Valerie,Vojta,Valmobile,Siblings
+709,Maren,Meinberg,Lamborghini,Siblings
