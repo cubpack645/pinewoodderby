@@ -31,8 +31,7 @@ The next step is to create the prelims round.  This includes loading racer recor
 	Bear
 	Webelo 1
 	Webelo 2
-	Younger Siblings
-	Older Siblings
+	Siblings
 
 At this point you can also create the Dens schedule:
 
