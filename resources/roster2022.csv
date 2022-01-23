@@ -13,7 +13,7 @@ Number,First Name,Last Name,Car Name,Den
 204,Harlem,Sato,Steel Fire,Tiger
 205,Penenelope,Moreno,"Ellie ""zoom zoom""",Tiger
 206,Tristan,Scott,Blue Tiger,Tiger
-207,Liam ,Janke,Green Thunder,Tiger
+207,Liam,Janke,Green Thunder,Tiger
 208,Luke,Crowley,Reddy the Dog,Tiger
 209,Marcus,Ewing,Syder,Tiger
 210,Noah,Milsom,Big Pickle Man,Tiger
@@ -25,6 +25,8 @@ Number,First Name,Last Name,Car Name,Den
 216,Elliott,Lupardus,E's Corvette,Tiger
 217,Jake,Sousa,Coming after you Parker,Tiger
 218,Jethro,Silver,Hot Rod,Tiger
+219,Lincoln,Patton,Cutting Cheese,Tiger
+220,Reed,Yanagimachi,Rainbow Dash,Tiger
 300,Finn,Morantes,Pringles Truck,Wolf
 301,Zoe,Morantes,Skull Crusher,Wolf
 302,Dylan,Dolley,J. Speedy,Wolf
@@ -65,6 +67,8 @@ Number,First Name,Last Name,Car Name,Den
 601,Eli,Rosenberg,Winner 1,Webelo 2
 602,Harrison,Clark,The Doxan Mobile,Webelo 2
 603,Kiran,Borman,Ice and Fire,Webelo 2
+604,Joaquin,Young,TNT,Webelo 2
+605,Tyler,Yanagimachi,Blackout,Webelo 2
 700,Melissa,Vojta,Flaming Fast,Siblings
 701,Andrew,Vojta,Blue Streak,Siblings
 702,Valerie,Vojta,Green Squid,Siblings
