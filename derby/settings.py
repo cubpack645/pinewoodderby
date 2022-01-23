@@ -19,6 +19,7 @@ IdRange = namedtuple("IdRange", "start end")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESOURCES_DIR = os.path.join(BASE_DIR, "resources")
 COMMANDS_DIR = os.path.join(BASE_DIR, "derby", "commands")
+DATABASE_DIR = '/mnt/c/users/david/Projects/GrandPrix'
 
 
 # Quick-start development settings - unsuitable for production
@@ -80,7 +81,8 @@ WSGI_APPLICATION = "derby.wsgi.application"
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 PRISTINE_DB = os.path.join(BASE_DIR, "resources", "pristine.sqlite")
-LIVE_DB = os.path.join(BASE_DIR, "live.sqlite")
+# LIVE_DB = os.path.join(BASE_DIR, "live.sqlite")
+LIVE_DB = os.path.join(DATABASE_DIR, "live.sqlite")
 BACKUPS_DIR = os.path.join(BASE_DIR, "backups")
 
 DATABASES = {
