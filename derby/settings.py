@@ -154,6 +154,7 @@ BACKUP_BEFORE = [
     "prelims",
     "mockprelims",
     "dens",
+    "autodq",
     "mockdens",
     "slowest",
     "semis",
@@ -225,3 +226,7 @@ ROUND_CONFIG = {
         "racechart_id_range": IdRange(4001, 5000),
     },
 }
+
+# Allow for cars to be automatically DQ'd (by increasing their finish time to be outside DNF_THRESHOLD)
+# This is to allow (for example) overweight cars to be raced, but to be excluded from trophies, etc.
+AUTO_DQ = [507]
