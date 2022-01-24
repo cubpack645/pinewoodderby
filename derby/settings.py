@@ -229,4 +229,5 @@ ROUND_CONFIG = {
 
 # Allow for cars to be automatically DQ'd (by increasing their finish time to be outside DNF_THRESHOLD)
 # This is to allow (for example) overweight cars to be raced, but to be excluded from trophies, etc.
-AUTO_DQ = [507]
+# For example: AUTO_DQ = [173, 597]
+AUTO_DQ = []
