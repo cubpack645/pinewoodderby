@@ -19,7 +19,8 @@ IdRange = namedtuple("IdRange", "start end")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESOURCES_DIR = os.path.join(BASE_DIR, "resources")
 COMMANDS_DIR = os.path.join(BASE_DIR, "derby", "commands")
-DATABASE_DIR = '/mnt/c/users/david/Projects/GrandPrix'
+# DATABASE_DIR = "/mnt/c/users/david/Projects/GrandPrix"
+DATABASE_DIR = "/home/dave/Projects/PinewoodDerby"
 
 
 # Quick-start development settings - unsuitable for production
@@ -139,8 +140,9 @@ DENS_EX_SIBLINGS = [
     "5. Webelo 1",
     "6. Webelo 2",
 ]
-SIBLINGS = ["7. Siblings"]
-DENS = DENS_EX_SIBLINGS + SIBLINGS
+SIBLINGS = "7. Siblings"
+PARENTS = "8. Parents"
+DENS = DENS_EX_SIBLINGS + [SIBLINGS, PARENTS]
 PACK_SLOWEST = "Pack Slowest"
 PACK_FASTEST = "Pack Fastest"
 
