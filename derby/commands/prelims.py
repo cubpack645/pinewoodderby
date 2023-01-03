@@ -8,7 +8,7 @@ from derby.commands.base_round import BaseRoundCommand
 
 logger = logging.getLogger(__name__)
 
-FileRecordWithCarName = namedtuple('FileRecord', 'carid lastname firstname carname group '.split())
+FileRecordWithCarName = namedtuple('FileRecord', 'carid firstname lastname carname group '.split())
 FileRecord = namedtuple('FileRecord', 'carid lastname firstname group '.split())
 
 

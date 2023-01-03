@@ -19,8 +19,8 @@ IdRange = namedtuple("IdRange", "start end")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RESOURCES_DIR = os.path.join(BASE_DIR, "resources")
 COMMANDS_DIR = os.path.join(BASE_DIR, "derby", "commands")
-# DATABASE_DIR = "/mnt/c/users/david/Projects/GrandPrix"
-DATABASE_DIR = "/home/dave/Projects/PinewoodDerby"
+# DATABASE_DIR = "/home/dave/Projects/PinewoodDerby"
+DATABASE_DIR = "/mnt/c/users/david/Projects/GrandPrix"
 
 
 # Quick-start development settings - unsuitable for production
