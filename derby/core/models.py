@@ -33,14 +33,22 @@ class Awards(models.Model):
     rank_id = models.IntegerField(
         db_column="RankID", blank=True, null=True
     )  # Field name made lowercase.
-    racer_id = models.IntegerField(
-        db_column="RacerID", blank=True, null=True
-    )  # Field name made lowercase.
+    racer = models.ForeignKey(
+        "RegistrationInfo",
+        on_delete=models.DO_NOTHING,
+        db_column="RacerID",
+        blank=True,
+        null=True,
+    )
     sort = models.IntegerField(db_column="Sort")  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = "Awards"
+
+    def __str__(self):
+        winner = str(self.racer) if self.racer else " No winner populated"
+        return f"{self.name}: {winner}"
 
 
 class Classes(models.Model):

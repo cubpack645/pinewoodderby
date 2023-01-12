@@ -54,18 +54,14 @@ class Command:
                         carnumber=int(record.winner), classid=self.prelims_class_id
                     )
                     award.rank_id = registration.rank_id
-                    award.racer_id = registration.id
+                    award.racer = registration
                 except RegistrationInfo.DoesNotExist:
                     logger.warn(
                         f"No Record found for winner of {record.name} award - car number was {record.winner}"
                     )
             try:
                 award.save()
-                logger.info(
-                    f"Saved {registration.carnumber} {registration.firstname} "
-                    f"{registration.lastname} as winner of award {award.name}"
-                )
-
+                logger.info(f"Saved Award {award}")
             except Exception as ex:
                 logger.error(
                     f"Failed to save award record for {award.name}, exception was {ex}"
