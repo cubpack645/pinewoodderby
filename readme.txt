@@ -8,20 +8,21 @@ The first command is to prepare a blank database
 	
 The next step is to create the prelims round.  This includes loading racer records from a roster csv file
 
-	pack prelims --roster=resources/roster2020.csv
+	pack prelims --roster=resources/roster2023.csv
 
-	Roster CSV file should look like this:
+	The Roster CSV file should look like this:
 
-	Car #,Last Name,First Name,Group 
-	102,Cruz,Enzo,Lion
-	104,Meinberg,Evan,Lion
-	105,Strum,Grant,Lion
-	106,Bishop,Issac,Lion
-	108,Shu,Kiran,Lion
-	109,Van Veen,Luke,Lion
-	201,Hedrick-Choi,Caden,Tiger
-	202,Carlson,Cole,Tiger
-	205,Schwartz,Eli,Tiger
+	Car #,First Name,Last Name,Car Name,Den
+	600,Cole,Carlson,Black Sabath,Webelo 2
+	605,Henry,LeVeque,You-look-sus,Webelo 2
+	608,Matthew,Njaa,Green light means go,Webelo 2
+	609,Eli,Schwartz,Metallic,Webelo 2
+	610,Dilan,Shah,Hydro,Webelo 2
+	611,Andres,Strittmatter,Smashy Road Rocket Launcher,Webelo 2
+	500,Luke,Van Veen,Galatic Gold,Webelo 1
+	501,Jack,Crowley,Mr. Quackers Car,Webelo 1
+	502,Kiran,Shu,The Pencil,Webelo 1
+	...
 
 	and the Dens should be:
 
@@ -34,19 +35,17 @@ The next step is to create the prelims round.  This includes loading racer recor
 	Siblings
 	Parents
 
-At this point you can also create the Dens schedule:
+Now you need to print off the schedule sheets for the prelims from the GP software
 
-	pack dens
+todo: add steps for printing off prelim from GP
 
-Now you need to print off the schedule sheets for prelims and den races from the GP software
+Note that we can't yet generate schedules for the Den races, because we will seed those in time-descending order, ie. so that the fastest cars in a den race together (relevant only when there are > 8 cars in a den, such that more than one race is needed).
 
-todo: add steps for printing off prelim and den schedules from GP
+Once the prelim rounds have been completed we will have recorded the times we need to populate the den, pack slowest final and pack fastest semi-finals
 
-Once the prelim rounds have been completed we will have recorded the times we need to populate the pack slowest final and pack fastest semi-finals
+	pack dens slowest semis
 
-	pack slowest semis
-
-And now you can print off the schedule sheets for these two
+And now you can print off the schedule sheets for these three
 
 Once the semi final racing has been completed, you need to create the schedule for the final.  Note that we take the 2 fastest from prelims direct into the final
 plus the fastest 3 from each of the 2 semi finals
@@ -62,7 +61,7 @@ You can create mock results for certain rounds to allow for end-to-end testing o
 
 For example:
 
-	pack --pristine db rounds prelims dens mockprelims mockdens slowest semis mocksemis final
+	pack --pristine db rounds prelims mockprelims dens mockdens slowest semis mocksemis final
 
 	will do everything up to (but excluding) the Pack Slowest and Pack Final timings
 
