@@ -9,7 +9,7 @@ from derby.core.models import Classes, Ranks, Rounds, Roster, RaceChart
 
 logger = logging.getLogger(__name__)
 
-CarLane = namedtuple('CarLane', 'car lane')
+CarLane = namedtuple("CarLane", "car lane")
 
 
 def create_heats(racers, randomize=True):
@@ -44,12 +44,16 @@ def create_race_chart(heats, starting_idx, parent_class, round, phase):
                 saved += 1
                 result_idx += 1
             except Exception as ex:
-                logger.warning(f'Failed to persist RaceChart entry with exception {ex}')
+                logger.warning(f"Failed to persist RaceChart entry with exception {ex}")
                 skipped += 1
-    logger.info(f'Saved {saved} and skipped {skipped} race chart entries, {populated} lanes filled, {empty} empty')
+    logger.info(
+        f"Saved {saved} and skipped {skipped} race chart entries, {populated} lanes filled, {empty} empty"
+    )
 
 
-def allocate_to_heats(records, lanes=settings.LANES, min_cars=settings.MIN_CARS_PER_HEAT):
+def allocate_to_heats(
+    records, lanes=settings.LANES, min_cars=settings.MIN_CARS_PER_HEAT
+):
     heats = []
     remaining = records
     while remaining:
@@ -152,8 +156,45 @@ class Averager:
         return results
 
 
-def select_racers_from_race_results(parent_class, round, ranks=None, heats=None, select='fastest',
-                                    limit=None, exclude_dnf=True, average=False, must_complete_rounds=None):
+def mark_prelims_to_ignore():
+    """
+    We want to exclude Siblings / Parents from Pack Slowest and Fastest rounds, to leave
+    those honors for just our Scouts.
+    Our own code does exactly that.
+    However, in GrandPrix, its nice to be able to show Standings on screen after the Prelims
+    round, so that scouts know who has made it into those rounds.  Since GrandPrix doesn't
+    know to exclude the Siblings, etc, we can't show those standings as is, as they may
+    include fast or slow sibling cars.
+    So this method marks the siblings prelims race times as 'IgnoreTime' so that GP
+    does indeed ignore them from Standings.
+
+    This method gets called from each of the slowest, semis, finaltop2, final commands.
+    Calling multiple times is redundant of course.  I considered adding this as its own
+    command, and calling it just once after the prelims, but decided to keep the race
+    operation as simple as possible (ie. fewer commands to have to remember).
+    """
+    prelims_class = Classes.objects.get(pk=settings.ROUND_CONFIG["prelims"]["class_id"])
+    for record in RaceChart.objects.filter(
+        classid=prelims_class,
+        racer__rank__rank__in=settings.DENS_TO_MARK_IGNORE,
+        ignoretime=0,
+    ).select_related("racer", "racer__rank"):
+        record.ignoretime = 1
+        record.save()
+        logger.warn(f"Marking {record.racer} {record.finishtime} as ignoretime in GP")
+
+
+def select_racers_from_race_results(
+    parent_class,
+    round,
+    ranks=None,
+    heats=None,
+    select="fastest",
+    limit=None,
+    exclude_dnf=True,
+    average=False,
+    must_complete_rounds=None,
+):
     filters = dict(
         classid=parent_class,
         round=round,
@@ -162,33 +203,47 @@ def select_racers_from_race_results(parent_class, round, ranks=None, heats=None,
     if heats:
         if isinstance(heats, int):
             heats = [heats]
-        filters['heat__in'] = heats
+        filters["heat__in"] = heats
     if ranks:
         if isinstance(ranks, Ranks):
             ranks = [ranks]
         elif not isinstance(ranks, (list, tuple)):
             ranks = list(ranks)
-        filters['racer__rank__in'] = ranks
+        filters["racer__rank__in"] = ranks
     if exclude_dnf:
         # this little detour may seem odd...
-        filters['finishtime__gte'] = settings.DNF_THRESHOLD
-        excluded = RaceChart.objects.filter(**filters).select_related('racer').order_by('finishtime')
+        filters["finishtime__gte"] = settings.DNF_THRESHOLD
+        excluded = (
+            RaceChart.objects.filter(**filters)
+            .select_related("racer")
+            .order_by("finishtime")
+        )
         for obj in excluded:
-            logger.warn(f'DNF threshold exceeded for {obj.racer} with time {obj.finishtime}')
-        del filters['finishtime__gte']
+            logger.warn(
+                f"DNF threshold exceeded for {obj.racer} with time {obj.finishtime}"
+            )
+        del filters["finishtime__gte"]
         # ok, detour over, back to the business at hand
-        filters['finishtime__lt'] = settings.DNF_THRESHOLD
+        filters["finishtime__lt"] = settings.DNF_THRESHOLD
 
-    results = RaceChart.objects.filter(**filters).select_related('racer').order_by('finishtime')
+    results = (
+        RaceChart.objects.filter(**filters)
+        .select_related("racer")
+        .order_by("finishtime")
+    )
 
     if average:
         results = Averager(results).average()
 
         if must_complete_rounds is not None:
-            results = [result for result in results if result.counttimes >= must_complete_rounds]
+            results = [
+                result
+                for result in results
+                if result.counttimes >= must_complete_rounds
+            ]
 
     # now lets iterate through these in fastest or slowest order, collecting racer objects as we go
-    results = iter(results) if select == 'fastest' else reversed(results)
+    results = iter(results) if select == "fastest" else reversed(results)
     racers, seen = [], set()
     for result in results:
         if result.racer not in seen:
@@ -205,10 +260,11 @@ def step(fn):
     Decorator which adds a method in a class to a list of STEPS to be executed
     Expects to find a STEPS container in the calling codes module scope
     """
-    fn.__globals__['STEPS'].append(fn)
+    fn.__globals__["STEPS"].append(fn)
 
     @functools.wraps(fn)
     def inner(fn):
         def wrapped(*args, **kwargs):
             return fn(*args, **kwargs)
+
     return inner

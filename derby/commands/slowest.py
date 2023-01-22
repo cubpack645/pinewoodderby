@@ -9,6 +9,7 @@ from derby.core.common import (
     create_heats,
     create_race_chart,
     select_racers_from_race_results,
+    mark_prelims_to_ignore,
 )
 from derby.commands.base_round import BaseRoundCommand
 
@@ -26,6 +27,9 @@ class Command(BaseRoundCommand):
 
     @step
     def create_racers(self):
+        # see method docs for why we do this
+        mark_prelims_to_ignore()
+
         prelims_class = Classes.objects.get(
             pk=settings.ROUND_CONFIG["prelims"]["class_id"]
         )
