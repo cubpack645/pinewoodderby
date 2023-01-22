@@ -146,13 +146,14 @@ class Averager:
         for racer, result in by_racer.items():
             if result.times:
                 result.finishtime = sum(result.times) / len(result.times)
+                result.counttimes = len(result.times)
                 results.append(result)
         results.sort(key=lambda i: i.finishtime)
         return results
 
 
 def select_racers_from_race_results(parent_class, round, ranks=None, heats=None, select='fastest',
-                                    limit=None, exclude_dnf=True, average=False):
+                                    limit=None, exclude_dnf=True, average=False, must_complete_rounds=None):
     filters = dict(
         classid=parent_class,
         round=round,
@@ -170,18 +171,21 @@ def select_racers_from_race_results(parent_class, round, ranks=None, heats=None,
         filters['racer__rank__in'] = ranks
     if exclude_dnf:
         # this little detour may seem odd...
-        filters['finishtime__gt'] = settings.DNF_THRESHOLD
+        filters['finishtime__gte'] = settings.DNF_THRESHOLD
         excluded = RaceChart.objects.filter(**filters).select_related('racer').order_by('finishtime')
         for obj in excluded:
             logger.warn(f'DNF threshold exceeded for {obj.racer} with time {obj.finishtime}')
-        del filters['finishtime__gt']
+        del filters['finishtime__gte']
         # ok, detour over, back to the business at hand
-        filters['finishtime__lte'] = settings.DNF_THRESHOLD
+        filters['finishtime__lt'] = settings.DNF_THRESHOLD
 
     results = RaceChart.objects.filter(**filters).select_related('racer').order_by('finishtime')
 
     if average:
         results = Averager(results).average()
+
+        if must_complete_rounds is not None:
+            results = [result for result in results if result.counttimes >= must_complete_rounds]
 
     # now lets iterate through these in fastest or slowest order, collecting racer objects as we go
     results = iter(results) if select == 'fastest' else reversed(results)

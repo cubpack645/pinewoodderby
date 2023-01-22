@@ -49,6 +49,7 @@ class Command(BaseRoundCommand):
                 select="slowest",
                 limit=self.config["count"],
                 average=True,
+                must_complete_rounds=2,
             )
         ):
             pk = self.config["registrationinfo_id_range"].start + i
