@@ -42,10 +42,10 @@ class GridCell:
         lines = []
         newlines = self.text.count("\n")
         if newlines == 0:
-            lines = ["", self.text, "", ""]
-        elif newlines == 2:
+            lines = ["", self.text, ""]
+        elif newlines == 1:
             lines = [*self.text.splitlines(), ""]
-        elif newlines == 3:
+        elif newlines == 2:
             lines = self.text.splitlines()
         else:
             raise ValueError(
@@ -58,8 +58,7 @@ class GridCell:
 
 
 class PdfTemplate(FPDF):
-    def __init__(self, title):
-        self.title = title
+    def __init__(self):
         self.created_on = datetime.datetime.now().strftime("%m/%d/%Y %I:%M %p")
         super().__init__(orientation="L", unit="mm", format="Letter")
 
@@ -76,10 +75,11 @@ class PdfTemplate(FPDF):
 
     def add_grid_header(self):
         self.set_font("Helvetica", "B", 9)
+        self.set_text_color(0, 0, 0)
         self.set_fill_color(200)
         self.cell(10, 6, "Heat", border=1, align="C", fill=True)
         for lane in range(1, settings.LANES + 1):
-            self.cell(22, 6, f"Lane {lane}", border=1, align="C", fill=True)
+            self.cell(30, 6, f"Lane {lane}", border=1, align="C", fill=True)
         # reset font size back to normal grid output
         self.set_font("Helvetica", "", 8)
         self.ln()
@@ -95,7 +95,7 @@ class Command:
         getattr(self, f"{self.args.output}_output")(grid)
 
     def pdf_output(self, grid):
-        pdf = PdfTemplate("Den Finals Schedule (Annotated)")
+        pdf = PdfTemplate()
 
         pdf.add_page()
 
@@ -123,19 +123,25 @@ class Command:
         pdf.add_grid_header()
 
         for grid_idx, grid_row in enumerate(grid, 1):
-            if grid_idx == 9:
+            if grid_idx == 12:
                 pdf.add_page()
                 pdf.add_grid_header()
             values = list(itertools.chain(*[cell.as_pdf_cells() for cell in grid_row]))
-            for row_idx in range(4):
-                row_values = values[row_idx::4]
+            for row_idx in range(3):
+                if row_idx == 0:
+                    pdf.set_font("Helvetica", "B", 9)
+                elif row_idx == 1:
+                    pdf.set_font("Helvetica", "", 8)
+                else:
+                    pdf.set_font("Helvetica", "B", 8)
+                row_values = values[row_idx::3]
                 border = "LR"
                 if row_idx == 0:
                     border += "T"
-                elif row_idx == 3:
+                elif row_idx == 2:
                     border += "B"
                 for i, value in enumerate(row_values):
-                    width = 10 if i == 0 else 22
+                    width = 10 if i == 0 else 30
                     pdf.set_text_color(*grid_row[i].rgb_color())
                     pdf.cell(width, 4.4, value, border, align="C")
                 pdf.ln()
@@ -154,7 +160,7 @@ class Command:
                     raise ValueError(f"No race chart entry for {heat=} {lane=}")
                 else:
                     if entry.racer:
-                        text = f"{entry.racer.carnumber}\n{entry.racer.firstname}\n{entry.racer.lastname}"
+                        text = f"{entry.racer.carnumber}\n{entry.racer.firstname} {entry.racer.lastname}"
                         style = ""
                         if hasattr(entry, "annotation_text"):
                             text += f"\n{entry.annotation_text}"
