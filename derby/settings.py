@@ -11,16 +11,18 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import pathlib
 from collections import namedtuple
 
 IdRange = namedtuple("IdRange", "start end")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RESOURCES_DIR = os.path.join(BASE_DIR, "resources")
-COMMANDS_DIR = os.path.join(BASE_DIR, "derby", "commands")
-# DATABASE_DIR = "/home/dave/Projects/PinewoodDerby"
-DATABASE_DIR = "/mnt/c/users/david/Projects/GrandPrix"
+BASE_DIR = pathlib.Path(__file__).parent.parent
+RESOURCES_DIR = BASE_DIR / "resources"
+COMMANDS_DIR = BASE_DIR / "derby" / "commands"
+
+DATABASE_DIR = "/home/dave/Projects/PinewoodDerby"
+# DATABASE_DIR = "/mnt/c/users/david/Projects/GrandPrix"
 
 
 # Quick-start development settings - unsuitable for production

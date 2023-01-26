@@ -8,3 +8,5 @@ pyflakes==2.1.1
 pytz==2019.2
 sqlparse==0.3.0
 termcolor==1.1.0
+rich
+fpdf

@@ -1,5 +1,4 @@
 import logging
-import os
 import shutil
 
 from django.conf import settings
@@ -7,18 +6,14 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
-class Command():
+class Command:
     def __init__(self, args):
         self.args = args
 
     def run(self):
-        if self.args.pristine:
-            db = 'pristine'
-        elif getattr(self.args, '2019', False):
-            db = '2019'
-        else:
-            raise Exception('Did not recognize the db you wanted to restore from')
-        src = os.path.join(settings.RESOURCES_DIR, f'{db}.sqlite')
-        logger.info(f'Copying database from {src} to {settings.LIVE_DB}')
-        shutil.copyfile(src=src, dst=settings.LIVE_DB)
-        logger.info('Copy complete')
+        db_path = settings.RESOURCES_DIR / f"{self.args.db}.sqlite"
+        if not db_path.exists():
+            raise ValueError(f"No database file found at {db_path}")
+        logger.info(f"Copying database from {db_path} to {settings.LIVE_DB}")
+        shutil.copyfile(src=db_path, dst=settings.LIVE_DB)
+        logger.info("Copy complete")

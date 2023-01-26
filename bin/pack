@@ -50,22 +50,25 @@ def main(args):
         backups.take_backup_if_required(action)
         try:
             cls(args).run()
-        except Exception as ex:
+        # except Exception as ex:
+        except IOError as ex:
             logger.error(f'Action {action} failed with exception {ex}')
 
 
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('actions', nargs='+', default=[], choices=COMMANDS)
-    parser.add_argument('-r', '--roster', default=os.path.join(settings.RESOURCES_DIR, 'roster.csv'))
-    parser.add_argument('-a', '--awards', default=os.path.join(settings.RESOURCES_DIR, 'awards2023.csv'))
-    parser.add_argument('-d', '--dryrun', action='store_true', default=False,
-                        help='Allows times to be simulated for races (via mock{*} commands)')
+    parser.add_argument('-r', '--roster', default=settings.RESOURCES_DIR / 'roster.csv')
+    parser.add_argument('-a', '--awards', default=settings.RESOURCES_DIR / 'awards2023.csv')
+    parser.add_argument(
+        '-d', '--dryrun', action='store_true', default=False,
+        help='Allows times to be simulated for races (via mock{*} commands)'
+    )
     parser.add_argument('-v', '--verbose', action='count', default=2)
-
-    dbgroup = parser.add_mutually_exclusive_group(required=False)
-    dbgroup.add_argument('--pristine', action='store_true', default=False)
-    dbgroup.add_argument('--2019', action='store_true', default=False)
+    parser.add_argument('-o', '--output', default='console', choices=('console', 'pdf'), help='Report output options')
+    parser.add_argument(
+        '--db', default='pristine', help="Database template to use when creating clean database with db command"
+    )
     return parser.parse_args()
 
 
