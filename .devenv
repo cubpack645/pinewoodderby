@@ -7,3 +7,5 @@ alias afterprelims="pack autodq dens slowest semis finaltop2"
 alias afterdens="pack autodq"
 alias final="pack final"
 alias mpy="$PROJECT/manage.py"
+alias pipc="cd $PROJECT && pip-compile && pip install -r requirements.txt"
+
