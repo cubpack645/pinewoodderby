@@ -126,6 +126,20 @@ class RaceInfo(models.Model):
         managed = False
         db_table = "RaceInfo"
 
+    @classmethod
+    def update_record(cls, key, value):
+        obj = cls.objects.get(itemkey=key)
+        obj.itemvalue = value
+        obj.save()
+
+    @classmethod
+    def set_event_title(cls, title):
+        cls.update_record(key="H1", value=title)
+
+    @classmethod
+    def set_event_date_str(cls, date_str):
+        cls.update_record(key="H2", value=date_str)
+
 
 class Ranks(models.Model):
     id = models.AutoField(
