@@ -23,6 +23,7 @@ COMMANDS_DIR = BASE_DIR / "derby" / "commands"
 
 DATABASE_DIR = "/home/dave/Projects/PinewoodDerby"
 # DATABASE_DIR = "/mnt/c/users/david/Projects/GrandPrix"
+REPORTS_DIR = pathlib.Path(DATABASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
