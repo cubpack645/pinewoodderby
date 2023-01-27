@@ -83,7 +83,7 @@ class DenFinalsReport:
         for round_name, schedule in schedules.items():
             if round_name == "dens":
                 continue
-            lookup = {entry.racer.carnumber: entry for entry in schedule}
+            lookup = {entry.racer.carnumber: entry for entry in schedule if entry.racer}
             ret[round_name] = lookup
         return ret
 
