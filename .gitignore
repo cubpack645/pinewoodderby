@@ -1,5 +1,5 @@
 *.pyc
 __pycache__
 live.sqlite
-env
 backups/*
+.env

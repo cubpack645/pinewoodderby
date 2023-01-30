@@ -10,27 +10,32 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-import os
 import pathlib
 from collections import namedtuple
+from decouple import config
 
 IdRange = namedtuple("IdRange", "start end")
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = pathlib.Path(__file__).parent.parent
-RESOURCES_DIR = BASE_DIR / "resources"
+BASE_DIR = pathlib.Path(__file__).parent.parent.parent
 COMMANDS_DIR = BASE_DIR / "derby" / "commands"
 
-DATABASE_DIR = "/home/dave/Projects/PinewoodDerby"
-# DATABASE_DIR = "/mnt/c/users/david/Projects/GrandPrix"
-REPORTS_DIR = pathlib.Path(DATABASE_DIR)
+DATA_DIR = pathlib.Path("/home/dave/Projects/PinewoodDerby")
+# DATA_DIR = "/mnt/c/users/david/Projects/GrandPrix"
+
+RESOURCES_DIR = DATA_DIR / "resources"
+PRISTINE_DB = RESOURCES_DIR / "pristine.sqlite"
+
+LIVE_DB = DATA_DIR / "live.sqlite"
+
+REPORTS_DIR = DATA_DIR
+BACKUPS_DIR = DATA_DIR / "backups"
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "y_qesc04(+t&smk6b&(k209y+da#a97@k-8z99nlq@hr%s4ocq"
+SECRET_KEY = config("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -83,19 +88,6 @@ WSGI_APPLICATION = "derby.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-PRISTINE_DB = os.path.join(BASE_DIR, "resources", "pristine.sqlite")
-# LIVE_DB = os.path.join(BASE_DIR, "live.sqlite")
-LIVE_DB = os.path.join(DATABASE_DIR, "live.sqlite")
-BACKUPS_DIR = os.path.join(BASE_DIR, "backups")
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": LIVE_DB,
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

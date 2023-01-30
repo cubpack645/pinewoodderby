@@ -1,4 +1,4 @@
-export DJANGO_SETTINGS_MODULE=derby.settings
+export DJANGO_SETTINGS_MODULE=derby.settings.local
 export PROJECT="$HOME/Projects/PinewoodDerby"
 export PYTHONPATH=$PROJECT:$PYTHONPATH
 alias pack="$PROJECT/bin/pack"

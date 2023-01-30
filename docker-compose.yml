@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  derby:
+    build: .
+    container_name: derby645
+    image: derby645
+    command: sleep infinity
+    environment:
+      - DJANGO_SETTINGS_MODULE=derby.settings.docker
+    volumes:
+      - /home/dave/Projects/PinewoodDerbyData:/data
