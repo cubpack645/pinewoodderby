@@ -5,6 +5,7 @@ import logging
 from django.conf import settings
 
 from derby.core.models import Awards, RegistrationInfo
+from derby.utils import resolve_user_provided_filepath
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +27,7 @@ AWARD_TYPE_DESIGN = 1
 
 class Command:
     def __init__(self, args):
-        self.awards_file = args.awards
+        self.awards_file = resolve_user_provided_filepath(args.awards)
         self.prelims_class_id = settings.ROUND_CONFIG["prelims"]["class_id"]
 
     def run(self):

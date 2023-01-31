@@ -67,9 +67,9 @@ def parse_args():
         help='Allows times to be simulated for races (via mock{*} commands)'
     )
     parser.add_argument('-v', '--verbose', action='count', default=2)
-    parser.add_argument('-o', '--output', default='console', choices=('console', 'pdf'), help='Report output options')
     parser.add_argument(
-        '--db', default='pristine', help="Database template to use when creating clean database with db command"
+        '--db', default=settings.RESOURCES_DIR / 'pristine.sqlite',
+        help="Database file to use when creating clean database"
     )
     return parser.parse_args()
 

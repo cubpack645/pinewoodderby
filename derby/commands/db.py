@@ -4,6 +4,7 @@ import shutil
 from django.conf import settings
 
 from derby.core.models import RaceInfo
+from derby.utils import resolve_user_provided_filepath
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +14,7 @@ class Command:
         self.args = args
 
     def run(self):
-        db_path = settings.RESOURCES_DIR / f"{self.args.db}.sqlite"
+        db_path = resolve_user_provided_filepath(self.args.db)
         if not db_path.exists():
             raise ValueError(f"No database file found at {db_path}")
         logger.info(f"Copying database from {db_path} to {settings.LIVE_DB}")

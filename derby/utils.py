@@ -1,5 +1,20 @@
 import colorlog
 import datetime
+import pathlib
+
+from django.conf import settings
+
+
+def resolve_user_provided_filepath(user_path):
+    path = pathlib.Path(user_path)
+    if path.exists():
+        return path
+    if not path.is_absolute():
+        constructed = settings.DATA_DIR / path
+        if constructed.exists():
+            return constructed
+    # else just return what they provided and let the file not found error run its course
+    return path
 
 
 def parse_date(raw):
