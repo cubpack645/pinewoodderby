@@ -4,7 +4,7 @@ services:
   derby:
     build: .
     container_name: derby645
-    image: derby645
+    image: pinewoodderby
     command: sleep infinity
     environment:
       - DJANGO_SETTINGS_MODULE=derby.settings.docker
