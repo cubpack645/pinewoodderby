@@ -33,8 +33,11 @@ git clone https://github.com/cubpack645/pinewoodderby-data.git
 ```shell
 docker run --rm --name derby -e DJANGO_SETTINGS_MODULE=derby.settings.docker -v path/to/pinewoodderby-data:/data cubpack645/pinewoodderby sleep infinity
 ```
+This will happily run forever, doing nothing.  Leave it running in this terminal and open a new terminal window for the session where we will actually interact with it.
 
 ### Step 4: Run a shell within the running docker container
+
+In a new terminal window, run a shell with the derby container
 
 ```shell
 docker exec -it derby bash
