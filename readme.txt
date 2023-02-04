@@ -1,30 +1,81 @@
+This repository contains the code that supports the running of the Cub Scouts Pack 645 Pinewood Derby.
+
+## Background 
+
+The event is run using 'Grand Prix Race Manager' from [grand-prix-software central.com](https://grandprix-software-central.com/). (We are using [version 18.0](https://grandprix-software-central.com/index.php/downloads/gprm)).  This runs on Windows or MacOS.  Talk to your Pack 645 pinewood derby person about obtaining a licence key.
+
+The software in this repository consists of a script that interacts with the Grand Prix database in various ways, for example:
+* populating a roster of racers
+* creating race schedules that fit with the way that Pack 645 structures its derby.
+* custom reporting that helps in organizing cars on race day.
+
+A [docker image](https://hub.docker.com/repository/docker/cubpack645/pinewoodderby/general) is the recommended way to run this script.  So you should not really need the code in this 
+repo unless you are looking to make modifications to it.
+
+You will however need the related repo: [cubpack645/pinewoodderby-data](https://github.com/cubpack645/pinewoodderby-data.git) which contains data needed for running the event, and also serves as the historical record for race results.
+
+## Getting Started
+
+### Step 1: Grand Prix Race Manager
+
+Download & install the Race Manager software from the link above, and enter the licence key you have been provided separately.
+
+### Step 2: Checkout the data repository
+
+Choosing some suitable location (e.g. your home directory, or a cubscouts folder, etc)
+
+```shell
+git clone https://github.com/cubpack645/pinewoodderby-data.git
+```
+
+### Step 3: Run the docker image
+
+```shell
+docker run --rm --name derby -e DJANGO_SETTINGS_MODULE=derby.settings.docker -v path/to/pinewoodderby-data:/data cubpack645/pinewoodderby sleep infinity
+```
+
+### Step 4: Run a shell within the running docker container
+
+```shell
+docker exec -it derby bash
+```
+
+You should be within the /app folder, where a **pack** entry point script lives.  /data should contain the mounted pinewoodderby-data folder.
+
+### Step 5: Test that everything is working
+
+We will create a blank database, ready for running a new event
+
+```shell
+./pack db --db=pristine.sqlite
+```
+
+Now run Grand Prix Race Manager, and open the database file live.sqlite located within your pinewoodderby-data folder.  If that opens ok, then you are
+all set and we can move on to how to run an actual event.
+
+## Running an Event
+
 bin/pack is the single entry point, you call it with different command arguments, and it carries out those commands.
 
-The first command is to prepare a blank database 
+### Step 1: Before the race
+The first command is to prepare a blank database, and populate some basic data about the rounds that we will run
 
-	pack --pristine db rounds
-		this copies pristine.sqlite from the resources database to the live location (live.sqlite)
-		the rounds command creates the necessary Classes table config in the database, specifying each round
+```shell
+./pack db rounds --db=pristine.sqlite
+```
 	
-The next step is to create the prelims round.  This includes loading racer records from a roster csv file
+The next step is to create the prelims round.  This includes loading racer records from a roster csv file that you specify with the --roster param.  
+The path you provide is relative to the pinewoodderby-data folder.
 
-	pack prelims --roster=resources/roster2023.csv
-
-	The Roster CSV file should look like this:
-
+```shell
+./pack prelims --roster=roster2023/roster2023.csv
+```
+The Roster CSV file should look like this:
 	Car #,First Name,Last Name,Car Name,Den
-	600,Cole,Carlson,Black Sabath,Webelo 2
-	605,Henry,LeVeque,You-look-sus,Webelo 2
-	608,Matthew,Njaa,Green light means go,Webelo 2
-	609,Eli,Schwartz,Metallic,Webelo 2
-	610,Dilan,Shah,Hydro,Webelo 2
-	611,Andres,Strittmatter,Smashy Road Rocket Launcher,Webelo 2
-	500,Luke,Van Veen,Galatic Gold,Webelo 1
-	501,Jack,Crowley,Mr. Quackers Car,Webelo 1
-	502,Kiran,Shu,The Pencil,Webelo 1
+	100,Smith,John,Blue Thunder,Lion
 	...
 
-	and the Dens should be:
+	and the Den names should be:
 
 	Lion
 	Tiger
@@ -37,31 +88,40 @@ The next step is to create the prelims round.  This includes loading racer recor
 
 Now you need to print off the schedule sheets for the prelims from the GP software
 
-todo: add steps for printing off prelim from GP
+### Step 2: Race day - Prelims
 
-Note that we can't yet generate schedules for the Den races, because we will seed those in time-descending order, ie. so that the fastest cars in a den race together (relevant only when there are > 8 cars in a den, such that more than one race is needed).
+Ok, its race day, you get the track & the timing unit set up & configured.  Run through the Prelims using Grand Prix.  Once the last prelims race is configured, we can now create the schedules for the Dens Finals, the Pack Slowest final, and the Pack Fastest Semi Finals.
 
-Once the prelim rounds have been completed we will have recorded the times we need to populate the den, pack slowest final and pack fastest semi-finals
+```shell
+./pack dens slowest semis finaltop2 densched
+```
 
-	pack dens slowest semis
+Now you can print off the schedule sheets for the next 3 rounds (Den Finals, Pack Slowest, Pack Semi Finals).  The purpose of the **finaltop2** command is to push the fastest 2 racers from Prelims directly to the Fastest Final.  The next 16 fastest racers have to battle it out in the Semi Finals for the right to advance.  The last command **densched** generates a custom Den Finals schedule report (den_finals_custom.pdf in the data folder) that tells the Race Set up crew which of the finishing Den cars to sequester for the next-to-run Slowest, Semi-Final and Final rounds.  If that doesn't make sense, it will when you see it.
 
-And now you can print off the schedule sheets for these three
+### Step 3: Den Finals, Slowest, Fastest Semi Finals
 
-Once the semi final racing has been completed, you need to create the schedule for the final.  Note that we take the 2 fastest from prelims direct into the final
-plus the fastest 3 from each of the 2 semi finals
+Run these races in Grand Prix.
 
-	pack final
+### Step 4: Pack Fastest Final
 
+With the semi finals complete, we can now create the schedule for the Fastest Final ... comprising the fastest 2 cars from Prelims plus the 3 fastest from each of the 2 semi finals.
+
+```shell
+./pack final
+```
 You can now print off the schedule for the final (and finally, run the race in GP)
 
-Note on Dry-Run testing
-=======================
+### Note on Dry-Run testing
 
 You can create mock results for certain rounds to allow for end-to-end testing of all this.
 
-For example:
+For example, having created prelim schedules you can fake times for those races with this command:
 
-	pack --pristine db rounds prelims mockprelims dens mockdens slowest semis mocksemis final
+```shell
+./pack mockprelims --dryrun
+```
 
-	will do everything up to (but excluding) the Pack Slowest and Pack Final timings
+The --dryrun parameter is required as a safety measure, to make sure you are running the mock command intentionally (as it will overwrite any existing prelims results).
+
+There similar mock commands for the other rounds: mockdens mockslowest mocksemis mockfinal
 
