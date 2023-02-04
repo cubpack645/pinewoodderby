@@ -129,6 +129,6 @@ For example, having created prelim schedules you can fake times for those races 
 
 The --dryrun parameter is required as a safety measure, to make sure you are running the mock command intentionally (as it will overwrite any existing prelims results).
 
-There similar mock commands for the other rounds: mockdens mockslowest mocksemis mockfinal
+There are similar mock commands for the other rounds: mockdens mockslowest mocksemis mockfinal
 
 Good luck!
