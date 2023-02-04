@@ -55,7 +55,7 @@ all set and we can move on to how to run an actual event.
 
 ## Running an Event
 
-bin/pack is the single entry point, you call it with different command arguments, and it carries out those commands.
+**pack** is the single entry point, you call it with different command arguments, and it carries out those commands.
 
 ### Step 1: Before the race
 The first command is to prepare a blank database, and populate some basic data about the rounds that we will run
@@ -68,14 +68,17 @@ The next step is to create the prelims round.  This includes loading racer recor
 The path you provide is relative to the pinewoodderby-data folder.
 
 ```shell
-./pack prelims --roster=roster2023/roster2023.csv
+./pack prelims --roster=2023/roster2023.csv
 ```
 The Roster CSV file should look like this:
+
+```csv
 	Car #,First Name,Last Name,Car Name,Den
 	100,Smith,John,Blue Thunder,Lion
 	...
+```
 
-	and the Den names should be:
+and the Den names should be:
 
 	Lion
 	Tiger
@@ -96,11 +99,11 @@ Ok, its race day, you get the track & the timing unit set up & configured.  Run 
 ./pack dens slowest semis finaltop2 densched
 ```
 
-Now you can print off the schedule sheets for the next 3 rounds (Den Finals, Pack Slowest, Pack Semi Finals).  The purpose of the **finaltop2** command is to push the fastest 2 racers from Prelims directly to the Fastest Final.  The next 16 fastest racers have to battle it out in the Semi Finals for the right to advance.  The last command **densched** generates a custom Den Finals schedule report (den_finals_custom.pdf in the data folder) that tells the Race Set up crew which of the finishing Den cars to sequester for the next-to-run Slowest, Semi-Final and Final rounds.  If that doesn't make sense, it will when you see it.
+Now you can print off the schedule sheets for the next 3 rounds (Den Finals, Pack Slowest, Pack Semi Finals).  The purpose of the **finaltop2** command is to push the fastest 2 racers from Prelims directly to the Fastest Final.  The next 16 fastest racers have to battle it out in the Semi Finals for the right to advance.  The last command **densched** generates a custom Den Finals schedule report (**den_finals_custom.pdf** in the data folder) that tells the Race Set up crew which of the finishing Den cars to sequester for the next-to-run Slowest, Semi-Final and Final rounds.  If that doesn't make sense, it will when you see it.
 
 ### Step 3: Den Finals, Slowest, Fastest Semi Finals
 
-Run these races in Grand Prix.
+Run these rounds of races in Grand Prix.
 
 ### Step 4: Pack Fastest Final
 
@@ -113,7 +116,7 @@ You can now print off the schedule for the final (and finally, run the race in G
 
 ### Note on Dry-Run testing
 
-You can create mock results for certain rounds to allow for end-to-end testing of all this.
+You can create mock results for certain rounds to allow for end-to-end testing of all this ahead of time.
 
 For example, having created prelim schedules you can fake times for those races with this command:
 
@@ -125,3 +128,4 @@ The --dryrun parameter is required as a safety measure, to make sure you are run
 
 There similar mock commands for the other rounds: mockdens mockslowest mocksemis mockfinal
 
+Good luck!
