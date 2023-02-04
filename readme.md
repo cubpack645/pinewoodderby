@@ -50,7 +50,7 @@ You should be within the /app folder, where a **pack** entry point script lives.
 We will create a blank database, ready for running a new event
 
 ```shell
-./pack db --db=pristine.sqlite
+./pack db --db=resources/pristine.sqlite
 ```
 
 Now run Grand Prix Race Manager, and open the database file live.sqlite located within your pinewoodderby-data folder.  If that opens ok, then you are
@@ -64,7 +64,7 @@ all set and we can move on to how to run an actual event.
 The first command is to prepare a blank database, and populate some basic data about the rounds that we will run
 
 ```shell
-./pack db rounds --db=pristine.sqlite
+./pack db rounds --db=resources/pristine.sqlite
 ```
 	
 The next step is to create the prelims round.  This includes loading racer records from a roster csv file that you specify with the --roster param.  
