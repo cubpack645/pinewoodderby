@@ -26,7 +26,7 @@ class Command(BaseRoundCommand):
 
     @step
     def create_racers(self):
-        path = resolve_user_provided_filepath(self.args.db)
+        path = resolve_user_provided_filepath(self.args.roster)
         csv_records = self._read_csv(path)
         logger.warning(
             f"Loaded {len(csv_records)} records from file {self.args.roster}"
