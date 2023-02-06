@@ -31,21 +31,14 @@ git clone https://github.com/cubpack645/pinewoodderby-data.git
 ### Step 3: Run the docker image
 
 ```shell
-docker run --rm --name derby -e DJANGO_SETTINGS_MODULE=derby.settings.docker -v path/to/pinewoodderby-data:/data cubpack645/pinewoodderby sleep infinity
+docker run -it --rm --name derby -e DJANGO_SETTINGS_MODULE=derby.settings.docker -v path/to/pinewoodderby-data:/data cubpack645/pinewoodderby bash
 ```
-This will happily run forever, doing nothing.  Leave it running in this terminal and open a new terminal window for the session where we will actually interact with it.
 
-### Step 4: Run a shell within the running docker container
-
-In a new terminal window, run a shell with the derby container
-
-```shell
-docker exec -it derby bash
-```
+(replacing path/to/pinewoodderby-data with the location you chose).
 
 You should be within the /app folder, where a **pack** entry point script lives.  /data should contain the mounted pinewoodderby-data folder.
 
-### Step 5: Test that everything is working
+### Step 4: Test that everything is working
 
 We will create a blank database, ready for running a new event
 
