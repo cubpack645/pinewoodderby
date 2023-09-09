@@ -70,7 +70,7 @@ The Roster CSV file should look like this:
 
 ```csv
 	Car #,First Name,Last Name,Car Name,Den
-	100,Smith,John,Blue Thunder,Lion
+	100,John,Smith,Blue Thunder,Lion
 	...
 ```
 
