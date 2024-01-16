@@ -184,6 +184,7 @@ ROUND_CONFIG = {
         "chart_type": -1,
         "phase": 1,
         "racechart_id_range": IdRange(1001, 2000),
+        "count": 8,
     },
     "slowest": {
         "class_id": 3,
