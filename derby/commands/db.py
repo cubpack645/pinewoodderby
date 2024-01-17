@@ -22,5 +22,5 @@ class Command:
         logger.info("Copy complete")
 
         logger.info("Updating event title and date")
-        RaceInfo.set_event_title("Pack 645 Pinewood Derby {self.args.date.year}")
+        RaceInfo.set_event_title(f"Pack 645 Pinewood Derby {self.args.date.year}")
         RaceInfo.set_event_date_str(self.args.date.strftime("%B %d %Y"))
