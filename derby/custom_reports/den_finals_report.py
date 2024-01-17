@@ -107,6 +107,7 @@ class DenFinalsPdf:
         self.font_size_emphasis = 9
         self.font_size_normal = 8
         self.font_size_footer = 8
+        self.date = datetime.date.today()
         self.created_on = datetime.datetime.now().strftime("%m/%d/%Y %I:%M %p")
 
     def create(self, grid, destination):
@@ -155,10 +156,10 @@ class DenFinalsPdf:
         pdf.image(str(settings.RESOURCES_DIR / "derby.png"), 10, 5, 45, 30)
         pdf.set_text_color(255, 0, 0)
         pdf.set_xy(40, 5)
-        pdf.cell(190, 10, "Pack 645 Pinewood Derby 2023", align="C")
+        pdf.cell(190, 10, f"Pack 645 Pinewood Derby {self.date.year}", align="C")
         pdf.set_text_color(0, 255, 0)
         pdf.set_xy(40, 15)
-        pdf.cell(190, 10, "January 23 2023", align="C")
+        pdf.cell(190, 10, self.date.strftime("%B %d %Y"), align="C")
         pdf.set_text_color(0, 0, 255)
         pdf.set_xy(40, 25)
         pdf.cell(190, 10, "Den Finals (Annotated)", align="C")
